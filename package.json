@@ -1,0 +1,24 @@
+{
+  "name": "postfoo-server",
+  "version": "1.0.0",
+  "description": "Post Foo is project for tracking personal finance",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/umakantp/postfoo-server.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/umakantp/postfoo-server/issues"
+  },
+  "homepage": "https://github.com/umakantp/postfoo-server#readme",
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}
