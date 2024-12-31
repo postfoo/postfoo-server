@@ -6,7 +6,7 @@ services:
   # - TEST_POSTGRES_URI=postgres://prisma:prisma@localhost:5432/
 
   postgres:
-    container_name: postfoo-db
+    container_name: postfoodb
     image: postgres:13.7
     restart: always
     environment:

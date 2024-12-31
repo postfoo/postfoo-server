@@ -13,6 +13,9 @@
     "build:clean": "rimraf dist/*",
     "start:node": "node -- dist/index.js",
     "dev": "npm run build:gql && npm run build:incr && concurrently -kr npm:build:watch npm:build:ongqlchange npm:build:ondistchange",
+    "db:init": "prisma migrate dev --name init",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
