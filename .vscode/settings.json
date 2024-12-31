@@ -2,8 +2,8 @@
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
   "editor.insertSpaces": true,
-  "editor.defaultFormatter": "vscode.typescript-language-features",
-  "editor.formatOnSaveMode": "modifications",
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.formatOnSaveMode": "file",
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "editor.codeActionsOnSave": {
@@ -13,6 +13,7 @@
   "search.exclude": {
     "**/node_modules": true,
     "**/.vscode": true,
+    "dist": true,
   },
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "typescript.preferences.importModuleSpecifierEnding": "minimal",

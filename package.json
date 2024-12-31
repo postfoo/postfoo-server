@@ -11,12 +11,16 @@
     "build:ondistchange": "onchange -k -i 'dist/**' -- npm run start:node",
     "build:ongqlchange": "onchange -k 'src/**/*.graphql' -- copyfiles '{{file}}' dist -u 1",
     "build:clean": "rimraf dist/*",
+    "start": "npm run db:deploy && npm run start:node",
     "start:node": "node -- dist/index.js",
     "dev": "npm run build:gql && npm run build:incr && concurrently -kr npm:build:watch npm:build:ongqlchange npm:build:ondistchange",
     "db:init": "prisma migrate dev --name init",
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "npm run lint -- --fix",
+    "types:checks": "tsc -p tsconfig.json --extendedDiagnostics",
+    "test": "exit 1"
   },
   "repository": {
     "type": "git",
@@ -30,6 +34,8 @@
   "homepage": "https://github.com/umakantp/postfoo-server#readme",
   "devDependencies": {
     "@stylistic/eslint-plugin": "^2.12.1",
+    "@stylistic/eslint-plugin-js": "^2.12.1",
+    "@stylistic/eslint-plugin-ts": "^2.12.1",
     "@total-typescript/ts-reset": "^0.6.1",
     "@types/graphql-resolvers": "^0.3.2",
     "@types/module-alias": "^2.0.4",

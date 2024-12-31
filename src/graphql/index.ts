@@ -1,6 +1,6 @@
-import { FastifyInstance } from 'fastify';
-import mercurius from 'mercurius';
-import { loadSchema } from 'src/graphql/schema';
+import { FastifyInstance } from 'fastify'
+import mercurius from 'mercurius'
+import { loadSchema } from 'src/graphql/schema'
 
 async function setup(app: FastifyInstance) {
   const schema = await loadSchema()
