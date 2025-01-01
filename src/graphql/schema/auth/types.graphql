@@ -1,0 +1,22 @@
+
+input VerifyCodeInput {
+  code: NonEmptyString!
+  userId: ID
+  mobile: PhoneNumber
+}
+
+input ResendCodeInput {
+  userId: ID
+  mobile: PhoneNumber
+}
+
+input SignInInput {
+  mobile: PhoneNumber!
+  password: NonEmptyString!
+}
+
+type Mutation {
+  verifyCode(input: VerifyCodeInput!): User!
+  resendCode(input: ResendCodeInput!): SuccessPayload!
+  signIn(input: SignInInput!): User!
+}

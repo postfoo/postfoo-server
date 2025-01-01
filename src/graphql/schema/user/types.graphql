@@ -1,0 +1,30 @@
+type User implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  mobile: PhoneNumber!
+  isVerified: Boolean!
+  isBlocked: Boolean!
+  status: UserStatus!
+  password: NonEmptyString!
+  salt: NonEmptyString!
+
+  firstName: NonEmptyString!
+  lastName: NonEmptyString
+  """ The generated full (first+last) name """
+  name: NonEmptyString!
+  """ A fresh JWT for the user """
+  token: JWT!
+  codes: [Code!]!
+}
+
+input SignUpInput {
+  firstName: NonEmptyString!
+  lastName: NonEmptyString
+  mobile: PhoneNumber!
+  password: NonEmptyString!
+}
+
+type Mutation {
+  signUp(input: SignUpInput!): User!
+}

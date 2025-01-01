@@ -19,19 +19,19 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
-CREATE TABLE "Token" (
+CREATE TABLE "Code" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "expireAt" TIMESTAMP(3) NOT NULL,
     "userId" TEXT NOT NULL,
-    "token" TEXT NOT NULL,
+    "code" TEXT NOT NULL,
 
-    CONSTRAINT "Token_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Code_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_mobile_key" ON "User"("mobile");
 
 -- AddForeignKey
-ALTER TABLE "Token" ADD CONSTRAINT "Token_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Code" ADD CONSTRAINT "Code_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

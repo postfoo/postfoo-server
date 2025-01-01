@@ -1,0 +1,11 @@
+type Code implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  """ When the code expires if set """
+  expireAt: DateTime
+  """ The user that this code is for """
+  userId: ID!
+  """ The OTP code that was sent to the user """
+  code: NonEmptyString!
+}

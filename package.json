@@ -17,9 +17,10 @@
     "db:init": "prisma migrate dev --name init",
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
+    "gql:codegen": "graphql-codegen",
+    "types:checks": "tsc -p tsconfig.json --extendedDiagnostics",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "npm run lint -- --fix",
-    "types:checks": "tsc -p tsconfig.json --extendedDiagnostics",
     "test": "exit 1"
   },
   "repository": {
@@ -33,19 +34,27 @@
   },
   "homepage": "https://github.com/umakantp/postfoo-server#readme",
   "devDependencies": {
+    "@graphql-codegen/add": "^5.0.3",
+    "@graphql-codegen/cli": "^5.0.3",
+    "@graphql-codegen/typescript": "^4.1.2",
+    "@graphql-codegen/typescript-resolvers": "^4.4.1",
     "@stylistic/eslint-plugin": "^2.12.1",
     "@stylistic/eslint-plugin-js": "^2.12.1",
     "@stylistic/eslint-plugin-ts": "^2.12.1",
     "@total-typescript/ts-reset": "^0.6.1",
     "@types/graphql-resolvers": "^0.3.2",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/lodash": "^4.17.13",
     "@types/module-alias": "^2.0.4",
     "@types/node": "^22.10.2",
+    "@types/otp-generator": "^4.0.2",
     "@typescript-eslint/eslint-plugin": "^8.18.2",
     "@typescript-eslint/parser": "^8.18.2",
     "concurrently": "^9.1.1",
     "copyfiles": "^2.4.1",
     "onchange": "^7.1.0",
     "prisma": "^6.1.0",
+    "prisma-enums-generator": "^1.1.1",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
@@ -60,9 +69,16 @@
     "fastify": "^5.2.0",
     "graphql": "^16.10.0",
     "graphql-resolvers": "^0.4.2",
+    "graphql-scalars": "^1.24.0",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
     "mercurius": "^16.0.0",
     "module-alias": "^2.2.3",
-    "tslib": "^2.8.1"
+    "moment": "^2.30.1",
+    "otp-generator": "^4.0.1",
+    "sendpulse-api": "^1.1.7",
+    "tslib": "^2.8.1",
+    "type-fest": "^4.31.0"
   },
   "_moduleAliases": {
     "src": "dist"

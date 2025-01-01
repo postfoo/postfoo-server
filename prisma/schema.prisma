@@ -8,6 +8,13 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator enums {
+  provider = "prisma-enums-generator"
+  output = "../src/graphql/schema/core/enums/types.graphql"
+  isExport = false
+  useComma = false
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -19,7 +26,7 @@ enum UserStatus {
 }
 
 model User {
-  id           String       @id @default(cuid())
+  id           String       @id @default(nanoid(12))
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
   mobile       String       @unique
@@ -30,15 +37,15 @@ model User {
   salt         String       @default("")
   firstName    String
   lastName     String?
-  tokens       Token[]
+  codes        Code[]
 }
 
-model Token {
-  id           String       @id @default(cuid())
+model Code {
+  id           String       @id @default(nanoid(12))
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
   expireAt     DateTime
   userId       String
   user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  token        String
+  code         String
 }

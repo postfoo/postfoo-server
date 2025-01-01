@@ -1,0 +1,15 @@
+""" https://the-guild.dev/graphql/scalars/docs/usage  """
+
+scalar BigInt
+scalar Void
+scalar NonEmptyString
+
+""" 2007-12-03 """
+scalar Date
+""" 2007-12-03T10:15:30Z """
+scalar DateTime
+
+scalar PhoneNumber
+scalar EmailAddress
+scalar JWT
+scalar URL

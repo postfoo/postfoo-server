@@ -1,0 +1,46 @@
+# https://relay.dev/docs/guides/graphql-server-specification/
+# https://www.apollographql.com/blog/designing-graphql-mutations
+
+interface Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+input PageInput {
+  """ How many to load (from the start), supports 0 for getting the `total` """
+  first: Int
+  """ How many to load (from the end, reversed results) """
+  last: Int
+  """ Offset-based pagination, skip this many """
+  offset: Int
+  """ Cursor-based pagination, load after this cursor """
+  after: String
+}
+
+""" Error codes """
+enum ErrorCode {
+  GRAPHQL_PARSE_FAILED
+  GRAPHQL_VALIDATION_FAILED
+  BAD_USER_INPUT
+  UNAUTHENTICATED
+  FORBIDDEN
+  NOT_FOUND
+  INTERNAL_SERVER_ERROR
+  DATABASE_ERROR
+  CONFLICT
+  LOCKED
+  TOO_MANY_REQUESTS
+  METHOD_NOT_ALLOWED
+}
+
+type SuccessPayload {
+  error: ErrorCode
+}
