@@ -18,6 +18,7 @@ export default [
       '@stylistic/ts/member-delimiter-style': ['error', { "multiline": { "delimiter": "comma" }, "singleline": { "delimiter": "comma" } }],
       '@stylistic/ts/semi': ['error', 'never'],
       '@stylistic/ts/indent': ['error', 2],
+      '@stylistic/ts/quotes': ['error', 'single', { "avoidEscape": true }],
       '@stylistic/ts/object-curly-newline': ['error', { "consistent": true }],
       '@stylistic/js/arrow-parens': ['error', 'as-needed', { "requireForBlockBody": true }],
       'require-await': 'error',

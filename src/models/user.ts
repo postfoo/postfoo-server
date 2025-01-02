@@ -1,9 +1,9 @@
-import db from "src/db"
-import { whereId } from "src/models/core"
-import { User, UserStatus } from "src/types"
-import * as errors from "src/utils/errors"
+import db from 'src/db'
+import { whereId } from 'src/models/core'
+import { User, UserStatus } from 'src/types'
+import * as errors from 'src/utils/errors'
 import * as jwt from 'src/utils/jwt'
-import { canonicalMobile } from "src/utils/utils"
+import { canonicalMobile } from 'src/utils/utils'
 
 export const get = (entity: string) => {
   return db.user.findUniqueOrThrow(whereId(entity))

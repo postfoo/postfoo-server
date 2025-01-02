@@ -1,5 +1,5 @@
-import db from "src/db"
-import { whereId } from "src/models/core"
+import db from 'src/db'
+import { whereId } from 'src/models/core'
 
 export const get = (entity: string) => {
   return db.code.findUniqueOrThrow(whereId(entity))

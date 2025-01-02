@@ -1,7 +1,7 @@
 {
   "name": "postfoo-server",
   "version": "1.0.0",
-  "description": "Post Foo is project for tracking personal finance",
+  "description": "PostFoo is project for tracking personal finance",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",

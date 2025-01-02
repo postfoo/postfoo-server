@@ -194,6 +194,7 @@ export interface PhoneNumberScalarConfig extends GraphQLScalarTypeConfig<Resolve
 
 export type QueryResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   add?: Resolver<t.Maybe<ResolversTypes['Int']>, ParentType, ContextType, Partial<t.QueryAddArgs>>,
+  me?: Resolver<t.Maybe<ResolversTypes['User']>, ParentType, ContextType>,
 }
 
 export type SuccessPayloadResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['SuccessPayload'] = ResolversParentTypes['SuccessPayload']> = {

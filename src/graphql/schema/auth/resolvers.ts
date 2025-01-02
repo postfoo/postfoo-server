@@ -9,6 +9,11 @@ import * as errors from 'src/utils/errors'
 import { comparePassword, generateOtp } from 'src/utils/utils'
 
 const resolvers: Resolvers = {
+  Query: {
+    me: (_, _args, ctx) => {
+      return ctx.user
+    },
+  },
   Mutation: {
     verifyCode: async (_, args) => {
       const { userId, mobile, code } = getInput(args)

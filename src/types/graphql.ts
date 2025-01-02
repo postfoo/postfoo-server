@@ -108,6 +108,7 @@ export type PageInput = {
 
 export type Query = {
   add?: Maybe<Scalars['Int']['output']>,
+  me?: Maybe<User>,
 }
 
 
