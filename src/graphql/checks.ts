@@ -94,4 +94,4 @@ export const isNotSignedIn = createRoot<Input<{ }>>((_, __, ctx) => {
   if (ctx.user) {
     throw errors.forbidden('This can only be accessed by the unauthenticated users')
   }
-})
+}, false)
