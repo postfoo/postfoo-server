@@ -25,13 +25,13 @@ export const mobileIsAvailable: RootGqlMiddleware<Input<{ mobile?: string }>> = 
 /** Used anywhere where current user should not be blocked */
 export const isBlocked: GqlMiddleware = (_, _args, ctx) => {
   if (ctx.user && ctx.user.isBlocked) {
-    throw errors.forbidden(`User ${ctx.user.id} is blocked`)
+    throw errors.forbidden('This cannot be accessed by blocked users')
   }
 }
 
 export const isNotVerified: GqlMiddleware = (_, _args, ctx) => {
   if (ctx.user && ctx.user.isVerified) {
-    throw errors.forbidden(`User ${ctx.user.id} is not verified to perform this action`)
+    throw errors.forbidden('This can only be accessed by verified users')
   }
 }
 

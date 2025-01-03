@@ -5,7 +5,7 @@ import parserTs from '@typescript-eslint/parser';
 
 export default [
   {
-    files: ['**/*.{js,mjs,cjs,ts,mts,jsx,tsx}'],
+    files: ['src/**/*.{js,mjs,cjs,ts,mts,jsx,tsx}'],
     languageOptions: {
       parser: parserTs,
     },
@@ -22,6 +22,9 @@ export default [
       '@stylistic/ts/object-curly-newline': ['error', { "consistent": true }],
       '@stylistic/js/arrow-parens': ['error', 'as-needed', { "requireForBlockBody": true }],
       'require-await': 'error',
+      'no-console': 'warn',
+      'no-debugger': 'warn',
+      // 'no-unused-vars': 'error',
     },
   },
 ]

@@ -18,7 +18,6 @@ export const verifyUser = async (userId: string) => {
 }
 
 export const fromJwt = async (claims?: jwt.Jwt): Promise<User | undefined> => {
-  // Don't accept other tokens (like Email) for authentication
   if (claims && claims.sub && claims.aud === jwt.Audience.Session) {
     try {
       const user = await get(claims.sub)
@@ -35,6 +34,6 @@ export const isSuperadmin = (user: User) => {
 }
 
 /** Extracts a full name out of a user */
-export const name = (user: { firstName: string; lastName?: string | null }): string => (
+export const name = (user: { firstName: string, lastName?: string | null }): string => (
   user.lastName ? `${user.firstName} ${user.lastName}` : user.firstName
 )
