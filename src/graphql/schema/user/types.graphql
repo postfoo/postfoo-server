@@ -17,14 +17,3 @@ type User implements Node {
   token: JWT!
   codes: [Code!]!
 }
-
-input SignUpInput {
-  firstName: NonEmptyString!
-  lastName: NonEmptyString
-  mobile: PhoneNumber!
-  password: NonEmptyString!
-}
-
-type Mutation {
-  signUp(input: SignUpInput!): User!
-}

@@ -35,6 +35,12 @@ export const isNotVerified: GqlMiddleware = (_, _args, ctx) => {
   }
 }
 
+export const isNotSignedIn: GqlMiddleware = (_, __, ctx) => {
+  if (ctx.user) {
+    throw errors.forbidden('This can only be accessed by the unauthenticated users')
+  }
+}
+
 const parseJwt = async (ctx: GraphQLContext) => {
   if (!ctx.jwt && ctx.token) {
     try {
@@ -85,13 +91,10 @@ export const isMyUser = createRoot<Input<{ userId?: string }>>((_, args, ctx) =>
   }
 })
 
-/** Used under a User, to require it matches the ctx.user */
 export const isMe = create<User>((user, _args, ctx) => {
   return isMyUser(user, { userId: user.id }, ctx)
 })
 
-export const isNotSignedIn = createRoot<Input<{ }>>((_, __, ctx) => {
-  if (ctx.user) {
-    throw errors.forbidden('This can only be accessed by the unauthenticated users')
-  }
-}, false)
+export const isNotAvailable = create<User>((_user, _args, _ctx) => {
+  throw errors.forbidden('This cannot be directly accessed')
+})

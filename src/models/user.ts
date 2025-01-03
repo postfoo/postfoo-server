@@ -33,3 +33,8 @@ export const fromJwt = async (claims?: jwt.Jwt): Promise<User | undefined> => {
 export const isSuperadmin = (user: User) => {
   return user.status === UserStatus.Superadmin
 }
+
+/** Extracts a full name out of a user */
+export const name = (user: { firstName: string; lastName?: string | null }): string => (
+  user.lastName ? `${user.firstName} ${user.lastName}` : user.firstName
+)

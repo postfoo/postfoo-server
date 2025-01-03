@@ -18,8 +18,16 @@ input SignInInput {
   password: NonEmptyString!
 }
 
+input SignUpInput {
+  firstName: NonEmptyString!
+  lastName: NonEmptyString
+  mobile: PhoneNumber!
+  password: NonEmptyString!
+}
+
 type Mutation {
   verifyCode(input: VerifyCodeInput!): User!
   resendCode(input: ResendCodeInput!): SuccessPayload!
   signIn(input: SignInInput!): User!
+  signUp(input: SignUpInput!): User!
 }
