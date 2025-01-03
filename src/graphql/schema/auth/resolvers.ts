@@ -1,6 +1,6 @@
 import moment from 'moment'
 import db from 'src/db'
-import { getInput, mobileIsAvailable } from 'src/graphql/checks'
+import { getInput } from 'src/graphql/checks'
 import { sms } from 'src/integrations/messages'
 import * as model from 'src/models'
 import { User, UserStatus } from 'src/types'
@@ -56,7 +56,7 @@ const resolvers: Resolvers = {
             await model.code.deleteByUserId(selectedUser.id)
             return selectedUser
           } else {
-            throw errors.badInput('Code is expired or invalid')
+            throw errors.invalidInput('code', 'OTP Code is expired or invalid')
           }
         }
       }
@@ -102,7 +102,7 @@ const resolvers: Resolvers = {
             return false
           })
         if (validCode) {
-          throw errors.badInput('User already has a validcode')
+          throw errors.invalidInput('code', 'User already has a valid code')
         }
         // lets send a verification code to the user over SMS
         const code = generateOtp()
@@ -125,7 +125,7 @@ const resolvers: Resolvers = {
       const user = await model.user.byMobile(mobile)
       if (user) {
         if (user.isBlocked) {
-          throw errors.forbidden('User is blocked')
+          throw errors.forbidden(`User ${user.id} is blocked`)
         }
         const isSame = await comparePassword(password, user.salt, user.password)
         if (isSame) {
@@ -133,12 +133,11 @@ const resolvers: Resolvers = {
           return user
         }
       }
-      throw errors.badInput('Wrong email or password')
+      throw errors.invalidInput('mobile', 'You have provided wrong mobile or password')
     },
 
-    signUp: async (root, args, ctx) => {
+    signUp: async (_root, args, _ctx) => {
       const { mobile, password, firstName, lastName } = getInput(args)
-      await mobileIsAvailable(root, { mobile }, ctx)
       const salt = await generateSalt()
       const hasedPassword = await hashPassword(password, salt)
       const user = await db.user.create({

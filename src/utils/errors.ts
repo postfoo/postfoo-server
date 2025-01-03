@@ -1,5 +1,6 @@
 /** We encapsulate all errors here, specially GraphQL ones */
 
+import { GraphQLError } from 'graphql'
 import _ from 'lodash'
 import { ErrorCode } from 'src/types/graphql'
 
@@ -53,3 +54,12 @@ export const methodNotAllowed = (msg = 'You are not allowed to perform this oper
 export const tooManyRequests = (msg = 'Please try this again later') => (
   error(msg, ErrorCode.TOO_MANY_REQUESTS)
 )
+
+export const invalidInput = (fieldName: string,message: string) => {
+  throw new GraphQLError(message, {
+    extensions: {
+      code: 'BAD_USER_INPUT',
+      fieldName,
+    },
+  })
+}

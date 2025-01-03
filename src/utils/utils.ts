@@ -72,3 +72,7 @@ export const handleCallback = <T>() => {
 export const toMS = (duration?: DurationInputObject): number => {
   return moment.duration(duration).asMilliseconds()
 }
+
+export const removeTrailingSlash = (path: string) => {
+  return path.endsWith('/') && path.length > 1 ? path.slice(0, -1) : path
+}

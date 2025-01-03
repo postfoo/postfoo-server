@@ -18,7 +18,7 @@ type RootGqlMiddleware<Args = {}> = GqlMiddleware<unknown, Args>
 export const mobileIsAvailable: RootGqlMiddleware<Input<{ mobile?: string }>> = async (_, args) => {
   const { mobile } = getInput(args)
   if (mobile && await model.user.byMobile(mobile)) {
-    throw errors.conflict('This mobile is already used')
+    errors.invalidInput('mobile', 'This mobile is already used')
   }
 }
 
