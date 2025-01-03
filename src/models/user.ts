@@ -9,6 +9,10 @@ export const get = (entity: string) => {
   return db.user.findUniqueOrThrow(whereId(entity))
 }
 
+export const getSafe = (entity: string) => {
+  return db.user.findUnique(whereId(entity))
+}
+
 export const byMobile = (mobile: string) => {
   return db.user.findUnique({ where: { mobile: canonicalMobile(mobile) } })
 }

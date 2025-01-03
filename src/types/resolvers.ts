@@ -81,6 +81,7 @@ export type ResolversTypes = {
   DateTime: ResolverTypeWrapper<t.Scalars['DateTime']['output']>,
   EmailAddress: ResolverTypeWrapper<t.Scalars['EmailAddress']['output']>,
   ErrorCode: t.ErrorCode,
+  ForgotPasswordInput: t.ForgotPasswordInput,
   ID: ResolverTypeWrapper<t.Scalars['ID']['output']>,
   Int: ResolverTypeWrapper<t.Scalars['Int']['output']>,
   JWT: ResolverTypeWrapper<t.Scalars['JWT']['output']>,
@@ -92,6 +93,7 @@ export type ResolversTypes = {
   PhoneNumber: ResolverTypeWrapper<t.Scalars['PhoneNumber']['output']>,
   Query: ResolverTypeWrapper<undefined>,
   ResendCodeInput: t.ResendCodeInput,
+  ResetPasswordInput: t.ResetPasswordInput,
   SignInInput: t.SignInInput,
   SignUpInput: t.SignUpInput,
   String: ResolverTypeWrapper<t.Scalars['String']['output']>,
@@ -111,6 +113,7 @@ export type ResolversParentTypes = {
   Date: t.Scalars['Date']['output'],
   DateTime: t.Scalars['DateTime']['output'],
   EmailAddress: t.Scalars['EmailAddress']['output'],
+  ForgotPasswordInput: t.ForgotPasswordInput,
   ID: t.Scalars['ID']['output'],
   Int: t.Scalars['Int']['output'],
   JWT: t.Scalars['JWT']['output'],
@@ -122,6 +125,7 @@ export type ResolversParentTypes = {
   PhoneNumber: t.Scalars['PhoneNumber']['output'],
   Query: undefined,
   ResendCodeInput: t.ResendCodeInput,
+  ResetPasswordInput: t.ResetPasswordInput,
   SignInInput: t.SignInInput,
   SignUpInput: t.SignUpInput,
   String: t.Scalars['String']['output'],
@@ -163,10 +167,12 @@ export interface JwtScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes[
 }
 
 export type MutationResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  forgotPassword?: Resolver<ResolversTypes['SuccessPayload'], ParentType, ContextType, RequireFields<t.MutationForgotPasswordArgs, 'input'>>,
   resendCode?: Resolver<ResolversTypes['SuccessPayload'], ParentType, ContextType, RequireFields<t.MutationResendCodeArgs, 'input'>>,
+  resetPassword?: Resolver<ResolversTypes['SuccessPayload'], ParentType, ContextType, RequireFields<t.MutationResetPasswordArgs, 'input'>>,
   signIn?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<t.MutationSignInArgs, 'input'>>,
   signUp?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<t.MutationSignUpArgs, 'input'>>,
-  verifyCode?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<t.MutationVerifyCodeArgs, 'input'>>,
+  verifyCode?: Resolver<ResolversTypes['SuccessPayload'], ParentType, ContextType, RequireFields<t.MutationVerifyCodeArgs, 'input'>>,
 }
 
 export type NodeResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']> = {

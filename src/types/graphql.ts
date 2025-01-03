@@ -55,16 +55,32 @@ export enum ErrorCode {
   UNAUTHENTICATED = 'UNAUTHENTICATED'
 }
 
+export type ForgotPasswordInput = {
+  mobile: Scalars['PhoneNumber']['input'],
+}
+
 export type Mutation = {
+  forgotPassword: SuccessPayload,
   resendCode: SuccessPayload,
+  resetPassword: SuccessPayload,
   signIn: User,
   signUp: User,
-  verifyCode: User,
+  verifyCode: SuccessPayload,
+}
+
+
+export type MutationForgotPasswordArgs = {
+  input: ForgotPasswordInput,
 }
 
 
 export type MutationResendCodeArgs = {
   input: ResendCodeInput,
+}
+
+
+export type MutationResetPasswordArgs = {
+  input: ResetPasswordInput,
 }
 
 
@@ -120,6 +136,12 @@ export type QueryAddArgs = {
 export type ResendCodeInput = {
   mobile?: InputMaybe<Scalars['PhoneNumber']['input']>,
   userId?: InputMaybe<Scalars['ID']['input']>,
+}
+
+export type ResetPasswordInput = {
+  code: Scalars['NonEmptyString']['input'],
+  mobile: Scalars['PhoneNumber']['input'],
+  password: Scalars['NonEmptyString']['input'],
 }
 
 export type SignInInput = {

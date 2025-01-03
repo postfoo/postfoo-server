@@ -25,9 +25,21 @@ input SignUpInput {
   password: NonEmptyString!
 }
 
+input ForgotPasswordInput {
+  mobile: PhoneNumber!
+}
+
+input ResetPasswordInput {
+  mobile: PhoneNumber!
+  code: NonEmptyString!
+  password: NonEmptyString!
+}
+
 type Mutation {
-  verifyCode(input: VerifyCodeInput!): User!
+  verifyCode(input: VerifyCodeInput!): SuccessPayload!
   resendCode(input: ResendCodeInput!): SuccessPayload!
   signIn(input: SignInInput!): User!
   signUp(input: SignUpInput!): User!
+  forgotPassword(input: ForgotPasswordInput!): SuccessPayload!
+  resetPassword(input: ResetPasswordInput!): SuccessPayload!
 }
