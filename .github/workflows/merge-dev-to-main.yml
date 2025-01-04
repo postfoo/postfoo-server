@@ -1,0 +1,14 @@
+name: merge dev to main
+
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    name: merge
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev
+
+      - run: git push origin dev:main -f

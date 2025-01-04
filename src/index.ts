@@ -21,6 +21,7 @@ app.get('/health', async (_req) => {
   await db.$queryRawUnsafe('SELECT 1')
   return {
     statusCode: 200,
+    RELEASE: process.env.RELEASE || '',
     RELEASE_AT: process.env.RELEASE_AT || '',
   }
 })
