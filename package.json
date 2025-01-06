@@ -4,8 +4,9 @@
   "description": "PostFoo is project for tracking personal finance",
   "main": "dist/index.js",
   "scripts": {
+    "build:gql": "copyfiles src/**/*.{graphql,mjml} dist -u 1",
+    "prebuild": "npm run build:gql",
     "build": "tsc",
-    "build:gql": "copyfiles src/**/*.graphql dist -u 1",
     "build:incr": "tsc -p tsconfig.json --incremental --tsBuildInfoFile dist/tsbuildinfo",
     "build:watch": "npm run build:incr -- --watch",
     "build:ondistchange": "onchange -k -i 'dist/**' -- npm run start:node",

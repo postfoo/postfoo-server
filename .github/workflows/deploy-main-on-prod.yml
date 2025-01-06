@@ -23,11 +23,11 @@ jobs:
           RELEASE=$(git rev-parse --short HEAD)
           RELEASED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)
           PORT=${{ secrets.POSTFOO_HOST_PORT }}
-          DATABASE_URL="${{ secrets.POSTFOO_DB_URL }}"
+          DATABASE_URL=\"${{ secrets.POSTFOO_DB_URL }}\"
           SEND_PULSE_API_USER_ID=${{ secrets.POSTFOO_SEND_PULSE_API_USER_ID }}
           SEND_PULSE_API_USER_SECRET=${{ secrets.POSTFOO_SEND_PULSE_API_USER_SECRET }}
-          AUTH_PRIVATE_KEY="${{ secrets.POSTFOO_AUTH_PRIVATE_KEY }}"
-          AUTH_PUBLIC_KEY="${{ secrets.POSTFOO_AUTH_PUBLIC_KEY }}"
+          AUTH_PRIVATE_KEY=\"${{ secrets.POSTFOO_AUTH_PRIVATE_KEY }}\"
+          AUTH_PUBLIC_KEY=\"${{ secrets.POSTFOO_AUTH_PUBLIC_KEY }}\"
           " > .env
           cat .env
 
