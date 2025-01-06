@@ -1,5 +1,9 @@
 # postfoo-server
 
+PostFoo is project for tracking personal portfolio
+
+Deployed @ [gql.postfoo.com](https://gqp.postfoo.com)
+
 ### Setup
 
 - Start the Postgres Database in [Docker](https://www.docker.com/get-started):
