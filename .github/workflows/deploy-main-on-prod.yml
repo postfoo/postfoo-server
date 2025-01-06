@@ -34,7 +34,6 @@ jobs:
       - name: Add environment variables to Github
         run: |
           echo "MODE=prod" >> $GITHUB_ENV
-          echo "NODE_ENV=production" >> $GITHUB_ENV
 
       - uses: actions/setup-node@v4
         with:
