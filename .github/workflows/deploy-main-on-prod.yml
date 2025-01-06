@@ -22,12 +22,12 @@ jobs:
           MODE=prod
           RELEASE=$(git rev-parse --short HEAD)
           RELEASED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-          PORT=${{ secrets.POSTFOO_PROD_PORT }}
-          DATABASE_URL=${{ secrets.POSTFOO_PROD_DB_URL }}
-          SEND_PULSE_API_USER_ID=${{ secrets.POSTFOO_PROD_SEND_PULSE_API_USER_ID }}
-          SEND_PULSE_API_USER_SECRET=${{ secrets.POSTFOO_PROD_SEND_PULSE_API_USER_SECRET }}
-          AUTH_PRIVATE_KEY="${{ secrets.POSTFOO_PROD_AUTH_PRIVATE_KEY }}"
-          AUTH_PUBLIC_KEY="${{ secrets.POSTFOO_PROD_AUTH_PUBLIC_KEY }}"
+          PORT=${{ secrets.POSTFOO_HOST_PORT }}
+          DATABASE_URL=${{ secrets.POSTFOO_DB_URL }}
+          SEND_PULSE_API_USER_ID=${{ secrets.POSTFOO_SEND_PULSE_API_USER_ID }}
+          SEND_PULSE_API_USER_SECRET=${{ secrets.POSTFOO_SEND_PULSE_API_USER_SECRET }}
+          AUTH_PRIVATE_KEY="${{ secrets.POSTFOO_AUTH_PRIVATE_KEY }}"
+          AUTH_PUBLIC_KEY="${{ secrets.POSTFOO_AUTH_PUBLIC_KEY }}"
           " > .env
           cat .env
 
@@ -53,10 +53,10 @@ jobs:
       - name: Stop the Server
         uses: garygrossgarten/github-action-ssh@release
         with:
-          host: ${{ secrets.POSTFOO_PROD_SERVER_HOST }}
-          port: ${{ secrets.POSTFOO_PROD_SERVER_PORT }}
-          username: ${{ secrets.POSTFOO_PROD_SERVER_USERNAME }}
-          privateKey: ${{ secrets.POSTFOO_PROD_SERVER_PKEY }}
+          host: ${{ secrets.POSTFOO_SSH_HOST }}
+          port: ${{ secrets.POSTFOO_SSH_PORT }}
+          username: ${{ secrets.POSTFOO_SSH_USERNAME }}
+          privateKey: ${{ secrets.POSTFOO_SSH_PKEY }}
           command: cd /root/spiderman/postfoo-server; pm2 stop spiderman; pm2 delete spiderman; mkdir -p /root/spiderman/postfoo-server
 
       - name: Deploy to DigitalOcean
@@ -64,16 +64,16 @@ jobs:
         with:
           switches: -avzr --delete --checksum
           remote_path: /root/spiderman/postfoo-server
-          remote_host: ${{ secrets.POSTFOO_PROD_SERVER_HOST }}
-          remote_port: ${{ secrets.POSTFOO_PROD_SERVER_PORT }}
-          remote_user: ${{ secrets.POSTFOO_PROD_SERVER_USERNAME }}
-          remote_key: ${{ secrets.POSTFOO_PROD_SERVER_PKEY }}
+          remote_host: ${{ secrets.POSTFOO_SSH_HOST }}
+          remote_port: ${{ secrets.POSTFOO_SSH_PORT }}
+          remote_user: ${{ secrets.POSTFOO_SSH_USERNAME }}
+          remote_key: ${{ secrets.POSTFOO_SSH_PKEY }}
 
       - name: Start the Server
         uses: garygrossgarten/github-action-ssh@release
         with:
-          host: ${{ secrets.POSTFOO_PROD_SERVER_HOST }}
-          port: ${{ secrets.POSTFOO_PROD_SERVER_PORT }}
-          username: ${{ secrets.POSTFOO_PROD_SERVER_USERNAME }}
-          privateKey: ${{ secrets.POSTFOO_PROD_SERVER_PKEY }}
+          host: ${{ secrets.POSTFOO_SSH_HOST }}
+          port: ${{ secrets.POSTFOO_SSH_PORT }}
+          username: ${{ secrets.POSTFOO_SSH_USERNAME }}
+          privateKey: ${{ secrets.POSTFOO_SSH_PKEY }}
           command: cd /root/spiderman/postfoo-server; pm2 start npm --name "spiderman" -- start
