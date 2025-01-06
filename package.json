@@ -24,7 +24,9 @@
     "types:checks": "tsc -p tsconfig.json --extendedDiagnostics",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "npm run lint -- --fix",
-    "test": "exit 1"
+    "test": "exit 1",
+    "ts": "ts-node --transpile-only -r ./src/setup",
+    "data:sync-funds": "npm run ts bin/data/sync-funds.ts"
   },
   "repository": {
     "type": "git",
@@ -70,6 +72,8 @@
     "@prisma/client": "^6.1.0",
     "chalk": "^5.4.1",
     "fastify": "^5.2.0",
+    "google-auth-library": "^9.15.0",
+    "googleapis": "^144.0.0",
     "graphql": "^16.10.0",
     "graphql-resolvers": "^0.4.2",
     "graphql-scalars": "^1.24.0",

@@ -49,3 +49,19 @@ model Code {
   user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   code         String
 }
+
+model Fund {
+  id            String       @id @default(nanoid(12))
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  name          String
+  description   String?
+  plan          String?
+  type          String?
+  category      String?
+  // Generally fund has only one symbol, but just in case if we need to support multiple symbols
+  // to be to grab from other system or something
+  symbol1       String?
+  symbol2       String?
+  lastNav       Float
+}
