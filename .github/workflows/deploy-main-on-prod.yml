@@ -21,7 +21,7 @@ jobs:
           echo "
           MODE=prod
           RELEASE=$(git rev-parse --short HEAD)
-          RELEASED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          RELEASE_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)
           PORT=${{ secrets.POSTFOO_HOST_PORT }}
           DATABASE_URL=\"${{ secrets.POSTFOO_DB_URL }}\"
           SEND_PULSE_API_USER_ID=${{ secrets.POSTFOO_SEND_PULSE_API_USER_ID }}
