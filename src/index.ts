@@ -28,7 +28,7 @@ app.get('/health', async (_req) => {
 
 app.register(cors, {
   // Prod access only from main domain
-  origin: process.env.MODE === 'prod' ? ['.postfoo.com', 'postfoo.com'] : '*',
+  origin: '*', // process.env.MODE === 'prod' ? ['.postfoo.com', 'postfoo.com'] : '*',
 })
 
 const main = async () => {
