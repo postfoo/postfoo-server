@@ -10,7 +10,7 @@ generator client {
 
 generator enums {
   provider = "prisma-enums-generator"
-  output = "../src/graphql/schema/core/enums/types.graphql"
+  output   = "../src/graphql/schema/core/enums/types.graphql"
   isExport = false
   useComma = false
 }
@@ -26,34 +26,63 @@ enum UserStatus {
 }
 
 model User {
-  id           String       @id @default(nanoid(12))
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  mobile       String       @unique
-  isVerified   Boolean      @default(false)
-  status       UserStatus   @default(User)
-  isBlocked    Boolean      @default(false)
-  password     String
-  salt         String       @default("")
-  firstName    String
-  lastName     String?
-  codes        Code[]
+  id         String       @id @default(nanoid(12))
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  mobile     String       @unique
+  isVerified Boolean      @default(false)
+  status     UserStatus   @default(User)
+  isBlocked  Boolean      @default(false)
+  password   String
+  salt       String       @default("")
+  firstName  String
+  lastName   String?
+  codes      Code[]
+  Membership Membership[]
 }
 
 model Code {
-  id           String       @id @default(nanoid(12))
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  expireAt     DateTime
-  userId       String
-  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  code         String
+  id        String   @id @default(nanoid(12))
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expireAt  DateTime
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  code      String
+}
+
+model Portfolio {
+  id          String          @id @default(cuid())
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  name        String?
+  description String?
+  members     Membership[]
+  funds       PortfolioFund[]
+}
+
+enum UserRole {
+  Member
+  Admin
+}
+
+model Membership {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  portfolioId String
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  role        UserRole  @default(Member)
+
+  @@unique([userId, portfolioId])
 }
 
 model Fund {
-  id            String       @id @default(nanoid(12))
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  id            String          @id @default(nanoid(12))
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
   name          String
   description   String?
   plan          String?
@@ -64,4 +93,19 @@ model Fund {
   symbol1       String?
   symbol2       String?
   lastNav       Float
+  PortfolioFund PortfolioFund[]
+}
+
+model PortfolioFund {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  portfolioId String
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id])
+  fundId      String
+  fund        Fund      @relation(fields: [fundId], references: [id])
+  units       Float     @default(0)
+  cost        Float     @default(0)
+
+  @@unique([fundId, portfolioId])
 }

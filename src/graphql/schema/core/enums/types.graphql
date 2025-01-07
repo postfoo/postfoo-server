@@ -3,3 +3,9 @@ enum UserStatus {
   Superadmin
 }
 
+
+enum UserRole {
+  Member
+  Admin
+}
+
