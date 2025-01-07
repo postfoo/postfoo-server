@@ -3,7 +3,7 @@ import db from 'src/db'
 import { getInput } from 'src/graphql/checks'
 import { sms } from 'src/integrations/messages'
 import * as model from 'src/models'
-import { MutationResendCodeArgs, User, UserStatus } from 'src/types'
+import { MutationResendCodeArgs, User, UserRole, UserStatus } from 'src/types'
 import { RequireFields, Resolvers } from 'src/types/resolvers'
 import * as errors from 'src/utils/errors'
 import { comparePassword, generateOtp, generateSalt, hashPassword } from 'src/utils/utils'
@@ -156,7 +156,11 @@ const resolvers: Resolvers = {
           isVerified: false,
           status: UserStatus.User,
           isBlocked: false,
+          memberships: { create: { role: UserRole.Admin, portfolio: {
+            create: { name: 'Default' },
+          } } },
         },
+        include: { memberships: { include: { portfolio: true } } },
       })
 
       // lets send a verification code to the user over SMS
