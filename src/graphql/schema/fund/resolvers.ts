@@ -1,6 +1,6 @@
 import db from 'src/db'
 import * as model from 'src/models'
-import { Resolvers } from "src/types/resolvers"
+import { Resolvers } from 'src/types/resolvers'
 
 const resolvers: Resolvers = {
   Query: {

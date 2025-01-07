@@ -45,7 +45,7 @@ const sendCode = async (args: RequireFields<MutationResendCodeArgs, 'input'>, is
   if (selectedUser) {
     // Check if user already has a code.
     const codes = await model.code.byUserId(selectedUser.id)
-    const validCode = codes.find(c => {
+    const validCode = codes.find((c) => {
       if (c.expireAt) {
         return moment(c.expireAt).utc().isBefore(moment().utc())
       }
@@ -107,7 +107,7 @@ const resolvers: Resolvers = {
       if (selectedUser) {
         const codes = await model.code.byUserId(selectedUser.id)
         if (codes.length > 0) {
-          const validCode = codes.find(c => {
+          const validCode = codes.find((c) => {
             if (c.expireAt) {
               return moment(c.expireAt).utc().isBefore(moment().utc()) && c.code === code
             }
@@ -191,7 +191,7 @@ const resolvers: Resolvers = {
       if (selectedUser) {
         const codes = await model.code.byUserId(selectedUser.id)
         if (codes.length > 0) {
-          const validCode = codes.find(c => {
+          const validCode = codes.find((c) => {
             if (c.expireAt) {
               return moment(c.expireAt).utc().isBefore(moment().utc()) && c.code === code
             }
