@@ -52,7 +52,7 @@ model Code {
 }
 
 model Portfolio {
-  id          String          @id @default(cuid())
+  id          String          @id @default(nanoid(12))
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
   name        String?
@@ -67,7 +67,7 @@ enum UserRole {
 }
 
 model Membership {
-  id          String    @id @default(cuid())
+  id          String    @id @default(nanoid(12))
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   userId      String
@@ -79,15 +79,98 @@ model Membership {
   @@unique([userId, portfolioId])
 }
 
+enum FundPlan {
+  Direct
+  Regular
+}
+
+enum FundType {
+  BONUS
+  GROWTH
+  IDCW
+  IDCW_PAYOUT
+  IDCW_REINVESTMENT
+  IDCW_DAILY_PAYOUT
+  IDCW_DAILY_REINVESTMENT
+  IDCW_WEEKLY_PAYOUT
+  IDCW_WEEKLY_REINVESTMENT
+  IDCW_MONTHLY_PAYOUT
+  IDCW_MONTHLY_REINVESTMENT
+  IDCW_QUARTERLY_PAYOUT
+  IDCW_QUARTERLY_REINVESTMENT
+  IDCW_HALFYEARLY_PAYOUT
+  IDCW_HALFYEARLY_REINVESTMENT
+  IDCW_YEARLY_PAYOUT
+  IDCW_YEARLY_REINVESTMENT
+}
+
+enum FundCategory {
+  HYBRID_DYNAMIC_ASSET_ALLOCATION
+  HYBRID_MULTI_ASSET_ALLOCATION
+  HYBRID_ARBITRAGE
+  HYBRID_AGGRESSIVE
+  HYBRID_CONSERVATIVE
+  HYBRID_EQUITY_SAVINGS
+  EQUITY_ELSS
+  EQUITY_FOCUSED
+  EQUITY_DIVIDEND_YIELD
+  EQUITY_BANKING_AND_FINANCIAL_SERVICES
+  EQUITY_SECTORAL_TECHNOLOGY
+  EQUITY_SECTORAL_INFRASTRUCTURE
+  EQUITY_SECTORAL_PHARMA_AND_HEALTHCARE
+  EQUITY_THEMATIC_CONSUMPTION
+  EQUITY_THEMATIC_INTERNATIONAL
+  EQUITY_THEMATIC_MANUFACTURING
+  EQUITY_THEMATIC_TRANSPORTATION
+  EQUITY_THEMATIC_MNC
+  EQUITY_THEMATIC_PSU
+  EQUITY_THEMATIC_QUANTITATIVE
+  EQUITY_THEMATIC_ESG
+  EQUITY_THEMATIC_OTHERS
+  EQUITY_VALUE
+  EQUITY_FLEXI_CAP
+  EQUITY_LARGE_AND_MID_CAP
+  EQUITY_SMALL_CAP
+  EQUITY_MID_CAP
+  EQUITY_LARGE_CAP
+  EQUITY_MULTI_CAP
+  DEBT_DYNAMIC_BOND
+  DEBT_CORPORATE_BOND
+  DEBT_BANKING_AND_PSU
+  DEBT_LIQUID
+  DEBT_FLOATER
+  DEBT_GILT
+  DEBT_GILT_10_YEARS_CONSTANT
+  DEBT_MONEY_MARKET
+  DEBT_CREDIT_RISK
+  DEBT_MEDIUM_TO_LONG_DURATION
+  DEBT_LONG_DURATION
+  DEBT_LOW_DURATION
+  DEBT_MEDIUM_DURATION
+  DEBT_OVERNIGHT
+  DEBT_SHORT_DURATION
+  DEBT_ULTRA_SHORT_DURATION
+  FOF_DOMESTIC_DEBT
+  FOF_DOMESTIC_HYBRID
+  FOF_DOMESTIC_EQUITY
+  FOF_DOMESTIC_GOLD
+  FOF_DOMESTIC_SILVER
+  FOF_OVERSEAS
+  CHILDRENS_FUND
+  RETIREMENT_FUND
+  ETF
+  INDEX_FUND
+}
+
 model Fund {
   id            String          @id @default(nanoid(12))
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   name          String
   description   String?
-  plan          String?
-  type          String?
-  category      String?
+  plan          FundPlan        @default(Direct)
+  type          FundType?
+  category      FundCategory?
   // Generally fund has only one symbol, but just in case if we need to support multiple symbols
   // to be to grab from other system or something
   symbol1       String?
@@ -97,7 +180,7 @@ model Fund {
 }
 
 model PortfolioFund {
-  id          String    @id @default(cuid())
+  id          String    @id @default(nanoid(18))
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   portfolioId String

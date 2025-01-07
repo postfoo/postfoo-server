@@ -1,5 +1,5 @@
 import * as model from 'src/models'
-import { GraphQLContext, User } from 'src/types'
+import { GraphQLContext, User, UserStatus } from 'src/types'
 import { Resolver } from 'src/types/resolvers'
 import * as errors from 'src/utils/errors'
 import * as jwt from 'src/utils/jwt'
@@ -89,6 +89,26 @@ export const isMyUser = createRoot<Input<{ userId?: string }>>((_, args, ctx) =>
   if (ctx.user.id !== userId) {
     throw errors.forbidden('This can only be accessed by the users themselves')
   }
+})
+
+export const isSuperadmin = createRoot<Input<{}>>((_, _args, ctx) => {
+  if (ctx.user.status !== UserStatus.Superadmin) {
+    throw errors.forbidden('This can only be accessed by the superadmins')
+  }
+})
+
+export const isMemberOfPortfolio = createRoot<Input<{ portfolioId: string }>>(async (_, args, ctx) => {
+  const { portfolioId } = getInput(args)
+  const isMember = await model.membership.isMember(ctx.user.id, portfolioId)
+  if (!isMember) {
+    throw errors.forbidden(`You are not a member of the portfolio: ${portfolioId}`)
+  }
+})
+
+export const isMemberOfPortfolioFund = createRoot<Input<{ portfolioFundId: string }>>(async (_, args, ctx) => {
+  const { portfolioFundId } = getInput(args)
+  const portfolioFund = await model.portfolioFund.get(portfolioFundId)
+  return isMemberOfPortfolio(_, { portfolioId: portfolioFund.portfolioId }, ctx)
 })
 
 export const isMe = create<User>((user, _args, ctx) => {

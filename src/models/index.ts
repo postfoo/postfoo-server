@@ -1,7 +1,10 @@
-
-/** A place for miscelaneous utils related to the model. Involving the DB and/or GQL */
-
 export * as auth from './auth'
 export * as code from './code'
+export * as filter from './filter'
+export * as fund from './fund'
+export * as membership from './membership'
+export * as portfolio from './portfolio'
+export * as portfolioFund from './portfolioFund'
+export * as prisma from './prisma'
 export * as user from './user'
 

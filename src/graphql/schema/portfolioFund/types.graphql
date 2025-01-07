@@ -1,0 +1,48 @@
+type PortfolioFund implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  portfolioId: ID!
+  fundId: ID!
+  units: Float!
+  cost: Float!
+}
+
+input CreatePortfolioFundInput {
+  portfolioId: ID!
+  fundId: ID!
+  units: Float!
+  cost: Float!
+}
+
+input UpdatePortfolioFundInput {
+  portfolioFundId: ID!
+  units: Float
+  cost: Float
+}
+
+input DeletePortfolioFundInput {
+  portfolioFundId: ID!
+}
+
+input PortfolioFundsInput {
+  portfolioId: ID!
+  page: PageInput
+}
+
+type PortfolioFundsPayload implements PagePayload {
+  nodes: [PortfolioFund!]!
+  pageInfo: PageInfo!
+  total: Int!
+}
+
+type Query {
+  portfolioFund(portfolioFundId: ID!): PortfolioFund!
+  portfolioFunds(input: PortfolioFundsInput!): PortfolioFundsPayload!
+}
+
+type Mutation {
+  createPortfolioFund(input: CreatePortfolioFundInput!): PortfolioFund!
+  updatePortfolioFund(input: UpdatePortfolioFundInput!): PortfolioFund!
+  deletePortfolioFund(input: DeletePortfolioFundInput!): SuccessPayload!
+}

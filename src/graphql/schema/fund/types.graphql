@@ -1,0 +1,70 @@
+type Fund implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  description: String
+  """ Direct or Regular """
+  plan: FundPlan
+  """ Growth or IDCW """
+  type: FundType
+  """ Hybrid or Equity or Debt or FOF """
+  category: FundCategory
+  """ Store google finance symbol """
+  symbol1: String
+  """ Any other external symbol for future """
+  symbol2: String
+  lastNav: Float!
+}
+
+input FundsInput {
+  search: String
+  plan: FundPlan
+  type: FundType
+  category: FundCategory
+  page: PageInput
+}
+
+input CreateFundInput {
+  name: String!
+  description: String
+  plan: FundPlan!
+  type: FundType
+  category: FundCategory
+  symbol1: String
+  symbol2: String
+  lastNav: Float!
+}
+
+input UpdateFundInput {
+  fundId: ID!
+  name: String
+  description: String
+  plan: FundPlan
+  type: FundType
+  category: FundCategory
+  symbol1: String
+  symbol2: String
+  lastNav: Float!
+}
+
+input DeleteFundInput {
+  fundId: ID!
+}
+
+type FundsPayload implements PagePayload {
+  nodes: [Fund!]!
+  pageInfo: PageInfo!
+  total: Int!
+}
+
+type Query {
+  fund(fundId: ID!): Fund!
+  funds(input: FundsInput!): FundsPayload!
+}
+
+type Mutation {
+  createFund(input: CreateFundInput!): Fund!
+  updateFund(input: UpdateFundInput!): Fund!
+  deleteFund(input: DeleteFundInput!): SuccessPayload!
+}

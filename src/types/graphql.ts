@@ -39,6 +39,32 @@ export type Code = Node & {
   userId: Scalars['ID']['output'],
 }
 
+export type CreateFundInput = {
+  category?: InputMaybe<FundCategory>,
+  description?: InputMaybe<Scalars['String']['input']>,
+  lastNav: Scalars['Float']['input'],
+  name: Scalars['String']['input'],
+  plan: FundPlan,
+  symbol1?: InputMaybe<Scalars['String']['input']>,
+  symbol2?: InputMaybe<Scalars['String']['input']>,
+  type?: InputMaybe<FundType>,
+}
+
+export type CreatePortfolioFundInput = {
+  cost: Scalars['Float']['input'],
+  fundId: Scalars['ID']['input'],
+  portfolioId: Scalars['ID']['input'],
+  units: Scalars['Float']['input'],
+}
+
+export type DeleteFundInput = {
+  fundId: Scalars['ID']['input'],
+}
+
+export type DeletePortfolioFundInput = {
+  portfolioFundId: Scalars['ID']['input'],
+}
+
 /**  Error codes  */
 export enum ErrorCode {
   BAD_USER_INPUT = 'BAD_USER_INPUT',
@@ -59,13 +85,155 @@ export type ForgotPasswordInput = {
   mobile: Scalars['PhoneNumber']['input'],
 }
 
+export type Fund = Node & {
+  /**  Hybrid or Equity or Debt or FOF  */
+  category?: Maybe<FundCategory>,
+  createdAt: Scalars['DateTime']['output'],
+  description?: Maybe<Scalars['String']['output']>,
+  id: Scalars['ID']['output'],
+  lastNav: Scalars['Float']['output'],
+  name: Scalars['String']['output'],
+  /**  Direct or Regular  */
+  plan?: Maybe<FundPlan>,
+  /**  Store google finance symbol  */
+  symbol1?: Maybe<Scalars['String']['output']>,
+  /**  Any other external symbol for future  */
+  symbol2?: Maybe<Scalars['String']['output']>,
+  /**  Growth or IDCW  */
+  type?: Maybe<FundType>,
+  updatedAt: Scalars['DateTime']['output'],
+}
+
+export enum FundCategory {
+  CHILDRENS_FUND = 'CHILDRENS_FUND',
+  DEBT_BANKING_AND_PSU = 'DEBT_BANKING_AND_PSU',
+  DEBT_CORPORATE_BOND = 'DEBT_CORPORATE_BOND',
+  DEBT_CREDIT_RISK = 'DEBT_CREDIT_RISK',
+  DEBT_DYNAMIC_BOND = 'DEBT_DYNAMIC_BOND',
+  DEBT_FLOATER = 'DEBT_FLOATER',
+  DEBT_GILT = 'DEBT_GILT',
+  DEBT_GILT_10_YEARS_CONSTANT = 'DEBT_GILT_10_YEARS_CONSTANT',
+  DEBT_LIQUID = 'DEBT_LIQUID',
+  DEBT_LONG_DURATION = 'DEBT_LONG_DURATION',
+  DEBT_LOW_DURATION = 'DEBT_LOW_DURATION',
+  DEBT_MEDIUM_DURATION = 'DEBT_MEDIUM_DURATION',
+  DEBT_MEDIUM_TO_LONG_DURATION = 'DEBT_MEDIUM_TO_LONG_DURATION',
+  DEBT_MONEY_MARKET = 'DEBT_MONEY_MARKET',
+  DEBT_OVERNIGHT = 'DEBT_OVERNIGHT',
+  DEBT_SHORT_DURATION = 'DEBT_SHORT_DURATION',
+  DEBT_ULTRA_SHORT_DURATION = 'DEBT_ULTRA_SHORT_DURATION',
+  EQUITY_BANKING_AND_FINANCIAL_SERVICES = 'EQUITY_BANKING_AND_FINANCIAL_SERVICES',
+  EQUITY_DIVIDEND_YIELD = 'EQUITY_DIVIDEND_YIELD',
+  EQUITY_ELSS = 'EQUITY_ELSS',
+  EQUITY_FLEXI_CAP = 'EQUITY_FLEXI_CAP',
+  EQUITY_FOCUSED = 'EQUITY_FOCUSED',
+  EQUITY_LARGE_AND_MID_CAP = 'EQUITY_LARGE_AND_MID_CAP',
+  EQUITY_LARGE_CAP = 'EQUITY_LARGE_CAP',
+  EQUITY_MID_CAP = 'EQUITY_MID_CAP',
+  EQUITY_MULTI_CAP = 'EQUITY_MULTI_CAP',
+  EQUITY_SECTORAL_INFRASTRUCTURE = 'EQUITY_SECTORAL_INFRASTRUCTURE',
+  EQUITY_SECTORAL_PHARMA_AND_HEALTHCARE = 'EQUITY_SECTORAL_PHARMA_AND_HEALTHCARE',
+  EQUITY_SECTORAL_TECHNOLOGY = 'EQUITY_SECTORAL_TECHNOLOGY',
+  EQUITY_SMALL_CAP = 'EQUITY_SMALL_CAP',
+  EQUITY_THEMATIC_CONSUMPTION = 'EQUITY_THEMATIC_CONSUMPTION',
+  EQUITY_THEMATIC_ESG = 'EQUITY_THEMATIC_ESG',
+  EQUITY_THEMATIC_INTERNATIONAL = 'EQUITY_THEMATIC_INTERNATIONAL',
+  EQUITY_THEMATIC_MANUFACTURING = 'EQUITY_THEMATIC_MANUFACTURING',
+  EQUITY_THEMATIC_MNC = 'EQUITY_THEMATIC_MNC',
+  EQUITY_THEMATIC_OTHERS = 'EQUITY_THEMATIC_OTHERS',
+  EQUITY_THEMATIC_PSU = 'EQUITY_THEMATIC_PSU',
+  EQUITY_THEMATIC_QUANTITATIVE = 'EQUITY_THEMATIC_QUANTITATIVE',
+  EQUITY_THEMATIC_TRANSPORTATION = 'EQUITY_THEMATIC_TRANSPORTATION',
+  EQUITY_VALUE = 'EQUITY_VALUE',
+  ETF = 'ETF',
+  FOF_DOMESTIC_DEBT = 'FOF_DOMESTIC_DEBT',
+  FOF_DOMESTIC_EQUITY = 'FOF_DOMESTIC_EQUITY',
+  FOF_DOMESTIC_GOLD = 'FOF_DOMESTIC_GOLD',
+  FOF_DOMESTIC_HYBRID = 'FOF_DOMESTIC_HYBRID',
+  FOF_DOMESTIC_SILVER = 'FOF_DOMESTIC_SILVER',
+  FOF_OVERSEAS = 'FOF_OVERSEAS',
+  HYBRID_AGGRESSIVE = 'HYBRID_AGGRESSIVE',
+  HYBRID_ARBITRAGE = 'HYBRID_ARBITRAGE',
+  HYBRID_CONSERVATIVE = 'HYBRID_CONSERVATIVE',
+  HYBRID_DYNAMIC_ASSET_ALLOCATION = 'HYBRID_DYNAMIC_ASSET_ALLOCATION',
+  HYBRID_EQUITY_SAVINGS = 'HYBRID_EQUITY_SAVINGS',
+  HYBRID_MULTI_ASSET_ALLOCATION = 'HYBRID_MULTI_ASSET_ALLOCATION',
+  INDEX_FUND = 'INDEX_FUND',
+  RETIREMENT_FUND = 'RETIREMENT_FUND'
+}
+
+export enum FundPlan {
+  Direct = 'Direct',
+  Regular = 'Regular'
+}
+
+export enum FundType {
+  BONUS = 'BONUS',
+  GROWTH = 'GROWTH',
+  IDCW = 'IDCW',
+  IDCW_DAILY_PAYOUT = 'IDCW_DAILY_PAYOUT',
+  IDCW_DAILY_REINVESTMENT = 'IDCW_DAILY_REINVESTMENT',
+  IDCW_HALFYEARLY_PAYOUT = 'IDCW_HALFYEARLY_PAYOUT',
+  IDCW_HALFYEARLY_REINVESTMENT = 'IDCW_HALFYEARLY_REINVESTMENT',
+  IDCW_MONTHLY_PAYOUT = 'IDCW_MONTHLY_PAYOUT',
+  IDCW_MONTHLY_REINVESTMENT = 'IDCW_MONTHLY_REINVESTMENT',
+  IDCW_PAYOUT = 'IDCW_PAYOUT',
+  IDCW_QUARTERLY_PAYOUT = 'IDCW_QUARTERLY_PAYOUT',
+  IDCW_QUARTERLY_REINVESTMENT = 'IDCW_QUARTERLY_REINVESTMENT',
+  IDCW_REINVESTMENT = 'IDCW_REINVESTMENT',
+  IDCW_WEEKLY_PAYOUT = 'IDCW_WEEKLY_PAYOUT',
+  IDCW_WEEKLY_REINVESTMENT = 'IDCW_WEEKLY_REINVESTMENT',
+  IDCW_YEARLY_PAYOUT = 'IDCW_YEARLY_PAYOUT',
+  IDCW_YEARLY_REINVESTMENT = 'IDCW_YEARLY_REINVESTMENT'
+}
+
+export type FundsInput = {
+  category?: InputMaybe<FundCategory>,
+  page?: InputMaybe<PageInput>,
+  plan?: InputMaybe<FundPlan>,
+  search?: InputMaybe<Scalars['String']['input']>,
+  type?: InputMaybe<FundType>,
+}
+
+export type FundsPayload = PagePayload & {
+  nodes: Array<Fund>,
+  pageInfo: PageInfo,
+  total: Scalars['Int']['output'],
+}
+
 export type Mutation = {
+  createFund: Fund,
+  createPortfolioFund: PortfolioFund,
+  deleteFund: SuccessPayload,
+  deletePortfolioFund: SuccessPayload,
   forgotPassword: SuccessPayload,
   resendCode: SuccessPayload,
   resetPassword: SuccessPayload,
   signIn: User,
   signUp: User,
+  updateFund: Fund,
+  updatePortfolioFund: PortfolioFund,
   verifyCode: SuccessPayload,
+}
+
+
+export type MutationCreateFundArgs = {
+  input: CreateFundInput,
+}
+
+
+export type MutationCreatePortfolioFundArgs = {
+  input: CreatePortfolioFundInput,
+}
+
+
+export type MutationDeleteFundArgs = {
+  input: DeleteFundInput,
+}
+
+
+export type MutationDeletePortfolioFundArgs = {
+  input: DeletePortfolioFundInput,
 }
 
 
@@ -91,6 +259,16 @@ export type MutationSignInArgs = {
 
 export type MutationSignUpArgs = {
   input: SignUpInput,
+}
+
+
+export type MutationUpdateFundArgs = {
+  input: UpdateFundInput,
+}
+
+
+export type MutationUpdatePortfolioFundArgs = {
+  input: UpdatePortfolioFundInput,
 }
 
 
@@ -122,15 +300,59 @@ export type PageInput = {
   offset?: InputMaybe<Scalars['Int']['input']>,
 }
 
+export type PagePayload = {
+  nodes: Array<Node>,
+  pageInfo: PageInfo,
+  total: Scalars['Int']['output'],
+}
+
+export type PortfolioFund = Node & {
+  cost: Scalars['Float']['output'],
+  createdAt: Scalars['DateTime']['output'],
+  fundId: Scalars['ID']['output'],
+  id: Scalars['ID']['output'],
+  portfolioId: Scalars['ID']['output'],
+  units: Scalars['Float']['output'],
+  updatedAt: Scalars['DateTime']['output'],
+}
+
+export type PortfolioFundsInput = {
+  page?: InputMaybe<PageInput>,
+  portfolioId: Scalars['ID']['input'],
+}
+
+export type PortfolioFundsPayload = PagePayload & {
+  nodes: Array<PortfolioFund>,
+  pageInfo: PageInfo,
+  total: Scalars['Int']['output'],
+}
+
 export type Query = {
-  add?: Maybe<Scalars['Int']['output']>,
+  fund: Fund,
+  funds: FundsPayload,
   me?: Maybe<User>,
+  portfolioFund: PortfolioFund,
+  portfolioFunds: PortfolioFundsPayload,
 }
 
 
-export type QueryAddArgs = {
-  x?: InputMaybe<Scalars['Int']['input']>,
-  y?: InputMaybe<Scalars['Int']['input']>,
+export type QueryFundArgs = {
+  fundId: Scalars['ID']['input'],
+}
+
+
+export type QueryFundsArgs = {
+  input: FundsInput,
+}
+
+
+export type QueryPortfolioFundArgs = {
+  portfolioFundId: Scalars['ID']['input'],
+}
+
+
+export type QueryPortfolioFundsArgs = {
+  input: PortfolioFundsInput,
 }
 
 export type ResendCodeInput = {
@@ -160,6 +382,24 @@ export type SuccessPayload = {
   error?: Maybe<ErrorCode>,
 }
 
+export type UpdateFundInput = {
+  category?: InputMaybe<FundCategory>,
+  description?: InputMaybe<Scalars['String']['input']>,
+  fundId: Scalars['ID']['input'],
+  lastNav: Scalars['Float']['input'],
+  name?: InputMaybe<Scalars['String']['input']>,
+  plan?: InputMaybe<FundPlan>,
+  symbol1?: InputMaybe<Scalars['String']['input']>,
+  symbol2?: InputMaybe<Scalars['String']['input']>,
+  type?: InputMaybe<FundType>,
+}
+
+export type UpdatePortfolioFundInput = {
+  cost?: InputMaybe<Scalars['Float']['input']>,
+  portfolioFundId: Scalars['ID']['input'],
+  units?: InputMaybe<Scalars['Float']['input']>,
+}
+
 export type User = Node & {
   codes: Array<Code>,
   createdAt: Scalars['DateTime']['output'],
@@ -177,6 +417,11 @@ export type User = Node & {
   /**  A fresh JWT for the user  */
   token: Scalars['JWT']['output'],
   updatedAt: Scalars['DateTime']['output'],
+}
+
+export enum UserRole {
+  Admin = 'Admin',
+  Member = 'Member'
 }
 
 export enum UserStatus {

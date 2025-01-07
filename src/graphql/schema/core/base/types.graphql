@@ -14,6 +14,12 @@ type PageInfo {
   endCursor: String
 }
 
+interface PagePayload {
+  nodes: [Node!]!
+  pageInfo: PageInfo!
+  total: Int!
+}
+
 input PageInput {
   """ How many to load (from the start), supports 0 for getting the `total` """
   first: Int
