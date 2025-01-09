@@ -28,6 +28,9 @@ export const resolvers: Resolvers = {
   URL: extendScalar(URLResolver, (url: URL) => url.href),
   PhoneNumber: PhoneNumberResolver,
   ['ID' as any]: NonEmptyStringResolver,
-}
+};
+
+// Otherwise it uses the name of the scalar `NonEmptyStringResolver`
+(resolvers as any)['ID'].name = 'ID'
 
 export default resolvers

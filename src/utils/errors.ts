@@ -55,8 +55,8 @@ export const tooManyRequests = (msg = 'Please try this again later') => (
   error(msg, ErrorCode.TOO_MANY_REQUESTS)
 )
 
-export const invalidInput = (fieldName: string,message: string) => {
-  throw new GraphQLError(message, {
+export const invalidInput = (fieldName: string, message: string) => {
+  return new GraphQLError(message, {
     extensions: {
       code: 'BAD_USER_INPUT',
       fieldName,

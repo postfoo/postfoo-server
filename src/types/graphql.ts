@@ -22,6 +22,7 @@ export type Scalars = {
   EmailAddress: { input: string, output: string },
   JWT: { input: string, output: string },
   NonEmptyString: { input: string, output: string },
+  /**  E.164 specification  */
   PhoneNumber: { input: string, output: string },
   URL: { input: string, output: string },
   Void: { input: void, output: void },
@@ -58,7 +59,7 @@ export type CreatePortfolioFundInput = {
 }
 
 export type CreatePortfolioInput = {
-  description: Scalars['String']['input'],
+  description?: InputMaybe<Scalars['String']['input']>,
   name: Scalars['String']['input'],
 }
 
@@ -344,7 +345,7 @@ export type PagePayload = {
 
 export type Portfolio = Node & {
   createdAt: Scalars['DateTime']['output'],
-  description: Scalars['String']['output'],
+  description?: Maybe<Scalars['String']['output']>,
   funds: Array<PortfolioFund>,
   id: Scalars['ID']['output'],
   members: Array<Membership>,
@@ -453,8 +454,8 @@ export type UpdatePortfolioFundInput = {
 }
 
 export type UpdatePortfolioInput = {
-  description: Scalars['String']['input'],
-  name: Scalars['String']['input'],
+  description?: InputMaybe<Scalars['String']['input']>,
+  name?: InputMaybe<Scalars['String']['input']>,
   portfolioId: Scalars['ID']['input'],
 }
 

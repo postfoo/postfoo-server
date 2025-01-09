@@ -105,17 +105,27 @@ export const isMemberOfPortfolio = createRoot<Input<{ portfolioId: string }>>(as
   }
 })
 
-export const isMemberOfPortfolioFund = createRoot<Input<{ portfolioFundId: string }>>(async (_, args, ctx) => {
-  const { portfolioFundId } = getInput(args)
-  const portfolioFund = await model.portfolioFund.get(portfolioFundId)
-  return isMemberOfPortfolio(_, { portfolioId: portfolioFund.portfolioId }, ctx)
-})
 
 export const isPortfolioAdmin = createRoot<Input<{ portfolioId: string }>>(async (_, args, ctx) => {
   const { portfolioId } = getInput(args)
   const isAdmin = await model.membership.isAdmin(ctx.user.id, portfolioId)
   if (!isAdmin) {
     throw errors.forbidden(`You are not a Admin of the portfolio: ${portfolioId}`)
+  }
+})
+
+export const isMemberOfPortfolioFund = createRoot<Input<{ portfolioFundId: string }>>(async (_, args, ctx) => {
+  const { portfolioFundId } = getInput(args)
+  const portfolioFund = await model.portfolioFund.get(portfolioFundId)
+  return isMemberOfPortfolio(_, { portfolioId: portfolioFund.portfolioId }, ctx)
+})
+
+export const isPortfolioFundAdmin = createRoot<Input<{ portfolioFundId: string }>>(async (_, args, ctx) => {
+  const { portfolioFundId } = getInput(args)
+  const portfolioFund = await model.portfolioFund.get(portfolioFundId)
+  const isAdmin = await model.membership.isAdmin(ctx.user.id, portfolioFund.portfolioId)
+  if (!isAdmin) {
+    throw errors.forbidden(`You are not a Admin of the portfolio: ${portfolioFund.portfolioId}`)
   }
 })
 

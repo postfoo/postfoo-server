@@ -2,6 +2,7 @@ import { Prisma, UserRole } from '@prisma/client'
 import db from 'src/db'
 import * as model from 'src/models'
 import { Resolvers } from 'src/types/resolvers'
+import * as errors from 'src/utils/errors'
 
 const resolvers: Resolvers = {
   Query: {
@@ -10,9 +11,14 @@ const resolvers: Resolvers = {
     },
   },
   Mutation: {
-    createPortfolio: (_, args, ctx) => {
+    createPortfolio: async(_, args, ctx) => {
       const { name, description } = args.input
       const userId = ctx.user.id
+      const count = await db.membership.count({ where: { userId } })
+      if (count >= 10) {
+        // 10 folios is fair usage for now. Above it we can by pass for partiular users on this basis we understand the usage.
+        throw errors.invalidInput('general', 'You have reached the maximum number of portfolios. Please email admin@postfoo.com to increase your limit.')
+      }
       return db.portfolio.create({ data: {
         name,
         description,

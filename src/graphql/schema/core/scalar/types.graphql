@@ -9,6 +9,7 @@ scalar Date
 """ 2007-12-03T10:15:30Z """
 scalar DateTime
 
+""" E.164 specification """
 scalar PhoneNumber
 scalar EmailAddress
 scalar JWT

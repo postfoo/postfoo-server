@@ -291,7 +291,7 @@ export interface PhoneNumberScalarConfig extends GraphQLScalarTypeConfig<Resolve
 
 export type PortfolioResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['Portfolio'] = ResolversParentTypes['Portfolio']> = {
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>,
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  description?: Resolver<t.Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   funds?: Resolver<ReadonlyArray<ResolversTypes['PortfolioFund']>, ParentType, ContextType>,
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
   members?: Resolver<ReadonlyArray<ResolversTypes['Membership']>, ParentType, ContextType>,
