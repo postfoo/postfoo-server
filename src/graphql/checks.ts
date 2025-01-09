@@ -111,6 +111,14 @@ export const isMemberOfPortfolioFund = createRoot<Input<{ portfolioFundId: strin
   return isMemberOfPortfolio(_, { portfolioId: portfolioFund.portfolioId }, ctx)
 })
 
+export const isPortfolioAdmin = createRoot<Input<{ portfolioId: string }>>(async (_, args, ctx) => {
+  const { portfolioId } = getInput(args)
+  const isAdmin = await model.membership.isAdmin(ctx.user.id, portfolioId)
+  if (!isAdmin) {
+    throw errors.forbidden(`You are not a Admin of the portfolio: ${portfolioId}`)
+  }
+})
+
 export const isMe = create<User>((user, _args, ctx) => {
   return isMyUser(user, { userId: user.id }, ctx)
 })

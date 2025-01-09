@@ -7,6 +7,7 @@ const resolvers: Resolvers = {
     token: (user, _args, _ctx) => {
       return model.auth.sessionToken(user, undefined, { })
     },
+    memberships: user => model.user.get(user.id).memberships({ orderBy: { createdAt: 'asc' } }),
   },
 }
 

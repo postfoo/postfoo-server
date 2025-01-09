@@ -1,0 +1,8 @@
+type Membership implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  portfolio: Portfolio!
+  user: User!
+  role: UserRole!
+}

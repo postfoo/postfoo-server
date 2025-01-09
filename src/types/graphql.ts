@@ -36,7 +36,7 @@ export type Code = Node & {
   id: Scalars['ID']['output'],
   updatedAt: Scalars['DateTime']['output'],
   /**  The user that this code is for  */
-  userId: Scalars['ID']['output'],
+  user: User,
 }
 
 export type CreateFundInput = {
@@ -57,12 +57,21 @@ export type CreatePortfolioFundInput = {
   units: Scalars['Float']['input'],
 }
 
+export type CreatePortfolioInput = {
+  description: Scalars['String']['input'],
+  name: Scalars['String']['input'],
+}
+
 export type DeleteFundInput = {
   fundId: Scalars['ID']['input'],
 }
 
 export type DeletePortfolioFundInput = {
   portfolioFundId: Scalars['ID']['input'],
+}
+
+export type DeletePortfolioInput = {
+  portfolioId: Scalars['ID']['input'],
 }
 
 /**  Error codes  */
@@ -201,10 +210,21 @@ export type FundsPayload = PagePayload & {
   total: Scalars['Int']['output'],
 }
 
+export type Membership = Node & {
+  createdAt: Scalars['DateTime']['output'],
+  id: Scalars['ID']['output'],
+  portfolio: Portfolio,
+  role: UserRole,
+  updatedAt: Scalars['DateTime']['output'],
+  user: User,
+}
+
 export type Mutation = {
   createFund: Fund,
+  createPortfolio: Portfolio,
   createPortfolioFund: PortfolioFund,
   deleteFund: SuccessPayload,
+  deletePortfolio: SuccessPayload,
   deletePortfolioFund: SuccessPayload,
   forgotPassword: SuccessPayload,
   resendCode: SuccessPayload,
@@ -212,6 +232,7 @@ export type Mutation = {
   signIn: User,
   signUp: User,
   updateFund: Fund,
+  updatePortfolio: Portfolio,
   updatePortfolioFund: PortfolioFund,
   verifyCode: SuccessPayload,
 }
@@ -222,6 +243,11 @@ export type MutationCreateFundArgs = {
 }
 
 
+export type MutationCreatePortfolioArgs = {
+  input: CreatePortfolioInput,
+}
+
+
 export type MutationCreatePortfolioFundArgs = {
   input: CreatePortfolioFundInput,
 }
@@ -229,6 +255,11 @@ export type MutationCreatePortfolioFundArgs = {
 
 export type MutationDeleteFundArgs = {
   input: DeleteFundInput,
+}
+
+
+export type MutationDeletePortfolioArgs = {
+  input: DeletePortfolioInput,
 }
 
 
@@ -264,6 +295,11 @@ export type MutationSignUpArgs = {
 
 export type MutationUpdateFundArgs = {
   input: UpdateFundInput,
+}
+
+
+export type MutationUpdatePortfolioArgs = {
+  input: UpdatePortfolioInput,
 }
 
 
@@ -306,12 +342,22 @@ export type PagePayload = {
   total: Scalars['Int']['output'],
 }
 
+export type Portfolio = Node & {
+  createdAt: Scalars['DateTime']['output'],
+  description: Scalars['String']['output'],
+  funds: Array<PortfolioFund>,
+  id: Scalars['ID']['output'],
+  members: Array<Membership>,
+  name: Scalars['String']['output'],
+  updatedAt: Scalars['DateTime']['output'],
+}
+
 export type PortfolioFund = Node & {
   cost: Scalars['Float']['output'],
   createdAt: Scalars['DateTime']['output'],
-  fundId: Scalars['ID']['output'],
+  fund: Fund,
   id: Scalars['ID']['output'],
-  portfolioId: Scalars['ID']['output'],
+  portfolio: Portfolio,
   units: Scalars['Float']['output'],
   updatedAt: Scalars['DateTime']['output'],
 }
@@ -331,6 +377,7 @@ export type Query = {
   fund: Fund,
   funds: FundsPayload,
   me?: Maybe<User>,
+  portfolio: Portfolio,
   portfolioFund: PortfolioFund,
   portfolioFunds: PortfolioFundsPayload,
 }
@@ -343,6 +390,11 @@ export type QueryFundArgs = {
 
 export type QueryFundsArgs = {
   input: FundsInput,
+}
+
+
+export type QueryPortfolioArgs = {
+  portfolioId: Scalars['ID']['input'],
 }
 
 
@@ -400,6 +452,12 @@ export type UpdatePortfolioFundInput = {
   units?: InputMaybe<Scalars['Float']['input']>,
 }
 
+export type UpdatePortfolioInput = {
+  description: Scalars['String']['input'],
+  name: Scalars['String']['input'],
+  portfolioId: Scalars['ID']['input'],
+}
+
 export type User = Node & {
   codes: Array<Code>,
   createdAt: Scalars['DateTime']['output'],
@@ -408,6 +466,7 @@ export type User = Node & {
   isBlocked: Scalars['Boolean']['output'],
   isVerified: Scalars['Boolean']['output'],
   lastName?: Maybe<Scalars['NonEmptyString']['output']>,
+  memberships: Array<Membership>,
   mobile: Scalars['PhoneNumber']['output'],
   /**  The generated full (first+last) name  */
   name: Scalars['NonEmptyString']['output'],

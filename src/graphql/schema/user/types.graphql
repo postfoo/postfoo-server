@@ -16,4 +16,5 @@ type User implements Node {
   """ A fresh JWT for the user """
   token: JWT!
   codes: [Code!]!
+  memberships: [Membership!]!
 }

@@ -5,7 +5,7 @@ type Code implements Node {
   """ When the code expires if set """
   expireAt: DateTime
   """ The user that this code is for """
-  userId: ID!
+  user: User!
   """ The OTP code that was sent to the user """
   code: NonEmptyString!
 }

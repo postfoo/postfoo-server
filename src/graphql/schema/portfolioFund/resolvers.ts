@@ -18,6 +18,10 @@ const resolvers: Resolvers = {
       return model.prisma.paginateList(nodes, page, total)
     },
   },
+  PortfolioFund: {
+    fund: portfolioFund => model.fund.get(portfolioFund.fundId),
+    portfolio: portfolioFund => model.portfolio.get(portfolioFund.portfolioId),
+  },
 }
 
 export default resolvers

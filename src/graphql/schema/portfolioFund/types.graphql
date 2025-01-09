@@ -2,8 +2,8 @@ type PortfolioFund implements Node {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  portfolioId: ID!
-  fundId: ID!
+  fund: Fund!
+  portfolio: Portfolio!
   units: Float!
   cost: Float!
 }

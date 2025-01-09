@@ -1,0 +1,34 @@
+type Portfolio implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  description: String!
+  members: [Membership!]!
+  funds: [PortfolioFund!]!
+}
+
+input CreatePortfolioInput {
+  name: String!
+  description: String!
+}
+
+input UpdatePortfolioInput {
+  portfolioId: ID!
+  name: String!
+  description: String!
+}
+
+input DeletePortfolioInput {
+  portfolioId: ID!
+}
+
+type Query {
+  portfolio(portfolioId: ID!): Portfolio!
+}
+
+type Mutation {
+  createPortfolio(input: CreatePortfolioInput!): Portfolio!
+  updatePortfolio(input: UpdatePortfolioInput!): Portfolio!
+  deletePortfolio(input: DeletePortfolioInput!): SuccessPayload!
+}
