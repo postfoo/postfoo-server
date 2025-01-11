@@ -61,18 +61,18 @@
     "concurrently": "^9.1.2",
     "copyfiles": "^2.4.1",
     "onchange": "^7.1.0",
-    "prisma": "^6.1.0",
+    "prisma": "^6.2.1",
     "prisma-enums-generator": "^1.1.1",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.3"
   },
   "dependencies": {
     "@fastify/cors": "^10.0.2",
     "@graphql-tools/load-files": "^7.0.0",
     "@graphql-tools/merge": "^9.0.17",
     "@graphql-tools/schema": "^10.0.16",
-    "@prisma/client": "^6.1.0",
+    "@prisma/client": "^6.2.1",
     "chalk": "^5.4.1",
     "fastify": "^5.2.1",
     "google-auth-library": "^9.15.0",
@@ -88,7 +88,7 @@
     "otp-generator": "^4.0.1",
     "sendpulse-api": "^1.1.7",
     "tslib": "^2.8.1",
-    "type-fest": "^4.31.0"
+    "type-fest": "^4.32.0"
   },
   "_moduleAliases": {
     "src": "dist"

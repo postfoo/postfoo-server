@@ -1,8 +1,8 @@
 # postfoo-server
 
-PostFoo is project for tracking personal portfolio
+PostFoo helps you keep track of your finances and information for you and your family
 
-Deployed @ [gql.postfoo.com](https://gqp.postfoo.com)
+This is deployed @ [gql.postfoo.com](https://gql.postfoo.com) and client at [postfoo.com](https://postfoo.com)
 
 ### Setup
 
@@ -41,12 +41,19 @@ Note: Generally for local development, you not need to change anything in the `.
 - Run `npm run db:migrate`
 - You can use `npm run db:migrate:dryrun` to just see the SQL before running it.
 
-## Deployment
 
-### Deploying to dev
+### Deployments
 
-TODO
+Deployments are done manually by triggering the [Deploy script](https://github.com/umakantp/postfoo-client/actions/workflows/merge-dev-to-main.yml).
 
-### Deploying to prod
 
-TODO
+### Coding guidelines
+
+Generally reading the code should get you the gist of what are the general guidelines. But there has to be some proper documentation in place soon.
+
+
+### TODO
+
+- [ ] Add a proper code documentation & project structure
+- [ ] Add a prettier
+- [ ] Fix the eslint config to add more general rules
