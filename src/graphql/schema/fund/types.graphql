@@ -60,7 +60,7 @@ type FundsPayload implements PagePayload {
 
 type Query {
   fund(fundId: ID!): Fund!
-  funds(input: FundsInput!): FundsPayload!
+  funds(input: FundsInput): FundsPayload!
 }
 
 type Mutation {

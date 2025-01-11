@@ -320,7 +320,7 @@ export type PortfolioFundsPayloadResolvers<ContextType = GraphQLContext, ParentT
 
 export type QueryResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   fund?: Resolver<ResolversTypes['Fund'], ParentType, ContextType, RequireFields<t.QueryFundArgs, 'fundId'>>,
-  funds?: Resolver<ResolversTypes['FundsPayload'], ParentType, ContextType, RequireFields<t.QueryFundsArgs, 'input'>>,
+  funds?: Resolver<ResolversTypes['FundsPayload'], ParentType, ContextType, Partial<t.QueryFundsArgs>>,
   me?: Resolver<t.Maybe<ResolversTypes['User']>, ParentType, ContextType>,
   portfolio?: Resolver<ResolversTypes['Portfolio'], ParentType, ContextType, RequireFields<t.QueryPortfolioArgs, 'portfolioId'>>,
   portfolioFund?: Resolver<ResolversTypes['PortfolioFund'], ParentType, ContextType, RequireFields<t.QueryPortfolioFundArgs, 'portfolioFundId'>>,

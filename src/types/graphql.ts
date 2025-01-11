@@ -390,7 +390,7 @@ export type QueryFundArgs = {
 
 
 export type QueryFundsArgs = {
-  input: FundsInput,
+  input?: InputMaybe<FundsInput>,
 }
 
 
