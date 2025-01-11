@@ -24,7 +24,7 @@
     "db:deploy": "prisma migrate deploy",
     "postdb:deploy": "prisma generate",
     "gql:codegen": "graphql-codegen",
-    "types:checks": "tsc -p tsconfig.json --extendedDiagnostics",
+    "typecheck": "tsc -p tsconfig.json --noEmit --extendedDiagnostics",
     "lint": "eslint",
     "lint:fix": "npm run lint -- --fix",
     "test": "exit 1",
