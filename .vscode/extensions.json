@@ -2,6 +2,9 @@
 {
   "recommendations": [
     "dbaeumer.vscode-eslint",
-    "EditorConfig.EditorConfig"
+    "EditorConfig.EditorConfig",
+    "prisma.prisma",
+    "yoavbls.pretty-ts-errors",
+    "github.vscode-github-actions"
   ]
 }

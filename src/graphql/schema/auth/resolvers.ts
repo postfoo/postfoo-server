@@ -6,6 +6,7 @@ import * as model from 'src/models'
 import { MutationResendCodeArgs, User, UserRole, UserStatus } from 'src/types'
 import { RequireFields, Resolvers } from 'src/types/resolvers'
 import * as errors from 'src/utils/errors'
+import { honeypot } from 'src/utils/honeypot'
 import { comparePassword, generateOtp, generateSalt, hashPassword } from 'src/utils/utils'
 
 const sendCode = async (args: RequireFields<MutationResendCodeArgs, 'input'>, isForgotPassword: boolean = false) => {
@@ -78,7 +79,9 @@ const resolvers: Resolvers = {
   },
   Mutation: {
     verifyCode: async (_, args) => {
-      const { userId, mobile, code } = getInput(args)
+      const input = getInput(args)
+      honeypot.check(input)
+      const { userId, mobile, code } = input
       let selectedUser: User | null = null
       if (mobile) {
         const user = await model.user.byMobile(mobile)
@@ -125,10 +128,13 @@ const resolvers: Resolvers = {
       return { }
     },
     resendCode: async (_, args) => {
+      honeypot.check(getInput(args))
       return await sendCode(args)
     },
     signIn: async (_, args, ctx) => {
-      const { mobile, password } = getInput(args)
+      const input = getInput(args)
+      honeypot.check(input)
+      const { mobile, password } = input
       const user = await model.user.byMobile(mobile)
       if (user) {
         if (user.isBlocked) {
@@ -143,6 +149,7 @@ const resolvers: Resolvers = {
       throw errors.invalidInput('mobile', 'You have provided wrong mobile or password')
     },
     signUp: async (_root, args, _ctx) => {
+      // No honeypot check for signup, use captcha instead
       const { mobile, password, firstName, lastName } = getInput(args)
       const salt = await generateSalt()
       const hasedPassword = await hashPassword(password, salt)
@@ -177,10 +184,13 @@ const resolvers: Resolvers = {
       return user
     },
     forgotPassword: async (_, args) => {
+      honeypot.check(getInput(args))
       return await sendCode(args, true)
     },
     resetPassword: async (_, args) => {
-      const { mobile, code, password } = getInput(args)
+      const input = getInput(args)
+      honeypot.check(input)
+      const { mobile, code, password } = input
       let selectedUser: User | null = null
 
       const user = await model.user.byMobile(mobile)

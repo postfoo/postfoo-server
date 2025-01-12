@@ -1,19 +1,20 @@
 import 'module-alias/register'
 
 import cors from '@fastify/cors'
-import fastify from 'fastify'
+import rateLimit from '@fastify/rate-limit'
+import fastify, { FastifyRequest } from 'fastify'
 import db from 'src/db'
 import graphql from 'src/graphql'
+import { honeypot } from 'src/utils/honeypot'
 import logger from 'src/utils/logger'
 import pkg from 'src/utils/pkg'
-
 const app = fastify({
   logger: true,
   ignoreTrailingSlash: true,
 })
 
-app.get('/', (_req, res) => {
-  res.send('OK')
+app.get('/', (_req, reply) => {
+  reply.send('OK')
 })
 
 app.get('/health', async (_req) => {
@@ -26,13 +27,78 @@ app.get('/health', async (_req) => {
   }
 })
 
+app.get('/gethp', async (_req, reply) => {
+  reply.send({
+    hp: await honeypot.getInputProps(),
+  })
+})
+
 app.register(cors, {
-  // Prod access only from main domain
+  // TODO: Prod access only from main domain
   origin: '*', // process.env.MODE === 'prod' ? ['.postfoo.com', 'postfoo.com'] : '*',
 })
 
+// When running tests or running in development, we want to effectively disable
+// rate limiting because playwright tests are very fast and we don't want to
+// have to wait for the rate limit to reset between tests.
+const maxMultiple = !(process.env.MODE === 'prod') || process.env.PLAYWRIGHT_TEST_BASE_URL ? 10_000 : 1
+
+const generalRateLimit = {
+  global: true,
+  timeWindow: 60 * 1000,
+  max: 1000 * maxMultiple,
+  standardHeaders: true,
+  legacyHeaders: false,
+  validate: { trustProxy: false },
+  // Malicious users can spoof their IP address which means we should not deault
+  // to trusting req.ip.
+  keyGenerator: (req: FastifyRequest) => {
+    const ip = req.headers['DO-Connecting-IP'] // digital ocean
+      || req.headers['cf-connecting-ip'] // cloudflare
+      || req.headers['fly-client-ip'] // fly.io
+      || req.headers['Fastly-Client-Ip']
+      || req.headers['X-Cluster-Client-IP']
+      || req.headers['"X-Client-IP"']
+      || req.headers['x-real-ip'] // nginx
+      || req.headers['x-client-ip'] // apache
+      || req.headers['x-forwarded-for'] // use this only if you trust the header
+      || req.socket.remoteAddress // fallback to default
+      || req.ip // fallback to default
+    if (ip) {
+      if (typeof ip === 'string') {
+        return ip.split(',').pop()?.trim() || 'unknown'
+      }
+      return ip.pop()?.trim() || 'unknown'
+    }
+    return 'unknown'
+  },
+}
+
+/*
+TODO:: Add rate limiting for operations by using query params:
+https://github.com/fastify/fastify-rate-limit/issues/408
+
+const strongRateLimit = {
+  ...generalRateLimit,
+  global: false,
+  timeWindow: 60 * 1000,
+  max: 100 * maxMultiple,
+}
+
+const strongestRateLimit = {
+  ...generalRateLimit,
+  global: false,
+  timeWindow: 60 * 1000,
+  max: 10 * maxMultiple,
+}
+
+const strongestOperations = ['verifyCode', 'resendCode', 'signIn', 'signUp', 'forgotPassword', 'resetPassword']
+const strongOperations = ['create', 'update', 'delete']
+*/
+
 const main = async () => {
   try {
+    await app.register(rateLimit, generalRateLimit)
     const port = process.env.PORT ? Number(process.env.PORT) : 4000
     await db.$connect()
 
