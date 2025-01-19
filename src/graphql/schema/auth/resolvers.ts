@@ -80,7 +80,7 @@ const resolvers: Resolvers = {
   Mutation: {
     verifyCode: async (_, args) => {
       const input = getInput(args)
-      honeypot.check(input)
+      await honeypot.check(input)
       const { userId, mobile, code } = input
       let selectedUser: User | null = null
       if (mobile) {
@@ -128,12 +128,12 @@ const resolvers: Resolvers = {
       return { }
     },
     resendCode: async (_, args) => {
-      honeypot.check(getInput(args))
+      await honeypot.check(getInput(args))
       return await sendCode(args)
     },
     signIn: async (_, args, ctx) => {
       const input = getInput(args)
-      honeypot.check(input)
+      await honeypot.check(input)
       const { mobile, password } = input
       const user = await model.user.byMobile(mobile)
       if (user) {
@@ -184,12 +184,12 @@ const resolvers: Resolvers = {
       return user
     },
     forgotPassword: async (_, args) => {
-      honeypot.check(getInput(args))
+      await honeypot.check(getInput(args))
       return await sendCode(args, true)
     },
     resetPassword: async (_, args) => {
       const input = getInput(args)
-      honeypot.check(input)
+      await honeypot.check(input)
       const { mobile, code, password } = input
       let selectedUser: User | null = null
 

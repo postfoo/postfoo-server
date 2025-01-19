@@ -27,9 +27,9 @@ app.get('/health', async (_req) => {
   }
 })
 
-app.get('/gethp', async (_req, reply) => {
+app.get('/get-honeypot-inputs', async (_req, reply) => {
   reply.send({
-    hp: await honeypot.getInputProps(),
+    honeypot: await honeypot.getInputProps(),
   })
 })
 

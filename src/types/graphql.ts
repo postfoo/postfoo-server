@@ -92,7 +92,9 @@ export enum ErrorCode {
 }
 
 export type ForgotPasswordInput = {
+  from__confirm?: InputMaybe<Scalars['String']['input']>,
   mobile: Scalars['PhoneNumber']['input'],
+  name__confirm?: InputMaybe<Scalars['String']['input']>,
 }
 
 export type Fund = Node & {
@@ -409,18 +411,24 @@ export type QueryPortfolioFundsArgs = {
 }
 
 export type ResendCodeInput = {
+  from__confirm?: InputMaybe<Scalars['String']['input']>,
   mobile?: InputMaybe<Scalars['PhoneNumber']['input']>,
+  name__confirm?: InputMaybe<Scalars['String']['input']>,
   userId?: InputMaybe<Scalars['ID']['input']>,
 }
 
 export type ResetPasswordInput = {
   code: Scalars['NonEmptyString']['input'],
+  from__confirm?: InputMaybe<Scalars['String']['input']>,
   mobile: Scalars['PhoneNumber']['input'],
+  name__confirm?: InputMaybe<Scalars['String']['input']>,
   password: Scalars['NonEmptyString']['input'],
 }
 
 export type SignInInput = {
+  from__confirm?: InputMaybe<Scalars['String']['input']>,
   mobile: Scalars['PhoneNumber']['input'],
+  name__confirm?: InputMaybe<Scalars['String']['input']>,
   password: Scalars['NonEmptyString']['input'],
 }
 
@@ -491,6 +499,8 @@ export enum UserStatus {
 
 export type VerifyCodeInput = {
   code: Scalars['NonEmptyString']['input'],
+  from__confirm?: InputMaybe<Scalars['String']['input']>,
   mobile?: InputMaybe<Scalars['PhoneNumber']['input']>,
+  name__confirm?: InputMaybe<Scalars['String']['input']>,
   userId?: InputMaybe<Scalars['ID']['input']>,
 }

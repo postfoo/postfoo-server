@@ -6,16 +6,22 @@ input VerifyCodeInput {
   code: NonEmptyString!
   userId: ID
   mobile: PhoneNumber
+  name__confirm: String
+  from__confirm: String
 }
 
 input ResendCodeInput {
   userId: ID
   mobile: PhoneNumber
+  name__confirm: String
+  from__confirm: String
 }
 
 input SignInInput {
   mobile: PhoneNumber!
   password: NonEmptyString!
+  name__confirm: String
+  from__confirm: String
 }
 
 input SignUpInput {
@@ -27,12 +33,16 @@ input SignUpInput {
 
 input ForgotPasswordInput {
   mobile: PhoneNumber!
+  name__confirm: String
+  from__confirm: String
 }
 
 input ResetPasswordInput {
   mobile: PhoneNumber!
   code: NonEmptyString!
   password: NonEmptyString!
+  name__confirm: String
+  from__confirm: String
 }
 
 type Mutation {

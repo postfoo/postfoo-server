@@ -2,6 +2,7 @@
 
 
 import { decrypt, encrypt, randomString } from 'src/utils/crypto'
+import * as errors from 'src/utils/errors'
 
 export interface HoneypotInputProps {
   /**
@@ -36,14 +37,6 @@ export interface HoneypotConfig {
 	 * The seed used for the encryption of the valid from timestamp.
 	 */
   encryptionSeed?: string,
-}
-
-/**
- * The error thrown when the Honeypot fails, meaning some automated bot filled
- * the form and the request is probably spam.
- */
-export class SpamError extends Error {
-  override readonly name = 'SpamError'
 }
 
 const DEFAULT_NAME_FIELD_NAME = 'name__confirm'
@@ -91,14 +84,14 @@ export class Honeypot {
       return
     }
 
-    if (!formData[(nameFieldName)]) {
-      throw new SpamError('Missing honeypot input')
+    if (!(nameFieldName in formData)) {
+      throw errors.unauthenticated('Missing honeypot input')
     }
 
     let honeypotValue = formData[(nameFieldName)]
 
     if (honeypotValue !== '') {
-      throw new SpamError('Honeypot input not empty')
+      throw errors.unauthenticated('Honeypot input not empty')
     }
     if (!this.validFromFieldName) {
       return
@@ -106,18 +99,20 @@ export class Honeypot {
 
     let validFrom = formData[(this.validFromFieldName)]
 
-    if (!validFrom) throw new SpamError('Missing honeypot valid from input')
+    if (!validFrom) {
+      throw errors.unauthenticated('Missing honeypot valid from input')
+    }
 
     let time = await this.decrypt(validFrom as string)
     if (!time) {
-      throw new SpamError('Invalid honeypot valid from input')
+      throw errors.unauthenticated('Invalid honeypot valid from input')
     }
     if (!this.isValidTimeStamp(Number(time))) {
-      throw new SpamError('Invalid honeypot valid from input')
+      throw errors.unauthenticated('Invalid honeypot valid from input')
     }
 
     if (this.isFuture(Number(time))) {
-      throw new SpamError('Honeypot valid from is in future')
+      throw errors.unauthenticated('Honeypot valid from is in future')
     }
   }
 
@@ -151,8 +146,7 @@ export class Honeypot {
 
   protected shouldCheckHoneypot(formData: Record<string, string>, nameFieldName: string): boolean {
     return (
-      nameFieldName in formData ||
-			Boolean(this.validFromFieldName && this.validFromFieldName in formData)
+      nameFieldName in formData || Boolean(this.validFromFieldName && this.validFromFieldName in formData)
     )
   }
 

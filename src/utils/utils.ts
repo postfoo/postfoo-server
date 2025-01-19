@@ -76,3 +76,8 @@ export const toMS = (duration?: DurationInputObject): number => {
 export const removeTrailingSlash = (path: string) => {
   return path.endsWith('/') && path.length > 1 ? path.slice(0, -1) : path
 }
+
+export const delay = (ms: number | DurationInputObject): Promise<void> => {
+  const time = _.isObject(ms) ? toMS(ms) : ms
+  return new Promise(resolve => setTimeout(resolve, time))
+}
