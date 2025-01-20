@@ -8,6 +8,7 @@ import graphql from 'src/graphql'
 import { honeypot } from 'src/utils/honeypot'
 import logger from 'src/utils/logger'
 import pkg from 'src/utils/pkg'
+import Sentry from 'src/utils/sentry'
 const app = fastify({
   logger: true,
   ignoreTrailingSlash: true,
@@ -36,6 +37,10 @@ app.get('/health', async (_req) => {
     RELEASE: process.env.RELEASE || '',
     RELEASE_AT: process.env.RELEASE_AT || '',
   }
+})
+
+app.get('/debug-sentry', function mainHandler(_req, _res) {
+  throw new Error('My first Sentry error!')
 })
 
 app.get('/get-honeypot-inputs', async (_req, reply) => {
@@ -112,6 +117,7 @@ const main = async () => {
     await app.register(rateLimit, generalRateLimit)
     const port = process.env.PORT ? Number(process.env.PORT) : 4000
     await db.$connect()
+    Sentry.setupFastifyErrorHandler(app)
 
     await graphql.setup(app)
     // 0.0.0.0 is the default host for Docker
@@ -128,6 +134,7 @@ const main = async () => {
 process.on('beforeExit', () => {
   app.close()
   db.$disconnect()
+  Sentry.close()
 })
 
 main()
