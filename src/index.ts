@@ -11,6 +11,17 @@ import pkg from 'src/utils/pkg'
 const app = fastify({
   logger: true,
   ignoreTrailingSlash: true,
+  trustProxy: true,
+})
+
+app.addHook('onSend', (_req, reply, _payload, done) => {
+  reply
+    .headers({
+      'X-Server-Release': process.env.RELEASE,
+      'X-Server-Release-At': process.env.RELEASE_AT,
+      'X-Server-Mode': process.env.MODE,
+    })
+  done()
 })
 
 app.get('/', (_req, reply) => {
