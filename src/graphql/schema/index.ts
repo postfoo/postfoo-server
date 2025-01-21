@@ -1,7 +1,7 @@
 import { loadFiles } from '@graphql-tools/load-files'
 import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge'
+import { composeResolvers } from '@graphql-tools/resolvers-composition'
 import { makeExecutableSchema } from '@graphql-tools/schema'
-import { combineResolvers } from 'graphql-resolvers'
 
 const getTypes = async () => {
   const files = await loadFiles(`${__dirname}/**/types.graphql`)
@@ -18,32 +18,24 @@ const getBareResolvers = async (): Promise<any> => {
   return mergeResolvers(files)
 }
 
-const getResolvers = async () => {
-  const [resolvers, permissions] = await Promise.all([
-    getBareResolvers(), getPermissions(),
-  ])
-  // TODO: It's not checking for conflicts, library does not support it
+const resolversComposition = async () => {
+  const permissions = await getPermissions()
+
+  const ret: Record<string, any[]> = {}
   for (const type in permissions) {
     const props = permissions[type]
-    if (!resolvers[type]) {
-      resolvers[type] = {}
-    }
     for (const prop in props) {
-      const list = props[prop]
-      if (resolvers[type][prop]) {
-        // Prepend the array of resolvers to the handler (if any)
-        list.push(resolvers[type][prop])
-      } else {
-        // Must add a resolver to explicitly return the value
-        list.push((o: any) => o[prop])
-      }
-      resolvers[type][prop] = combineResolvers(...list)
+      ret[`${type}.${prop}`] = props[prop]
     }
   }
-  return resolvers
+  return ret
 }
 
 export async function loadSchema() {
-  const [typeDefs, resolvers] = await Promise.all([getTypes(), getResolvers()])
+  const actualResolvers = await getBareResolvers()
+  const [typeDefs, resolvers] = await Promise.all([
+    getTypes(),
+    composeResolvers(actualResolvers, await resolversComposition())
+  ])
   return makeExecutableSchema({ typeDefs, resolvers })
 }

@@ -1,15 +1,14 @@
 import * as checks from 'src/graphql/checks'
-import { Permissions } from 'src/types'
 
-const permissions: Permissions = {
+const permissions = {
   Mutation: {
-    resendCode: [checks.isNotSignedIn],
-    verifyCode: [checks.isNotSignedIn],
-    signIn: [checks.isNotSignedIn],
-    forgotPassword: [checks.isNotSignedIn],
-    resetPassword: [checks.isNotSignedIn],
+    resendCode: [checks.isNotSignedIn()],
+    verifyCode: [checks.isNotSignedIn()],
+    signIn: [checks.isNotSignedIn()],
+    forgotPassword: [checks.isNotSignedIn()],
+    resetPassword: [checks.isNotSignedIn()],
     // Todo: add captcha verify & throtttle
-    signUp: [checks.isNotSignedIn, checks.mobileIsAvailable],
+    signUp: [checks.isNotSignedIn(), checks.mobileIsAvailable()],
   },
 }
 

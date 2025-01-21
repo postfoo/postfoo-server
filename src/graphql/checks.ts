@@ -11,36 +11,6 @@ export const getInput = <T extends object>(args: Input<T>): T => {
   return 'input' in args ? args.input : args
 }
 
-type GqlMiddleware<Parent = unknown, Args = {}> = Resolver<void, Parent, GraphQLContext, Args>
-type RootGqlMiddleware<Args = {}> = GqlMiddleware<unknown, Args>
-
-/** Used anywhere where an mobile is included, to require if not taken */
-export const mobileIsAvailable: RootGqlMiddleware<Input<{ mobile?: string }>> = async (_, args) => {
-  const { mobile } = getInput(args)
-  if (mobile && await model.user.byMobile(mobile)) {
-    errors.invalidInput('mobile', 'This mobile is already used')
-  }
-}
-
-/** Used anywhere where current user should not be blocked */
-export const isBlocked: GqlMiddleware = (_, _args, ctx) => {
-  if (ctx.user && ctx.user.isBlocked) {
-    throw errors.forbidden('This cannot be accessed by blocked users')
-  }
-}
-
-export const isNotVerified: GqlMiddleware = (_, _args, ctx) => {
-  if (ctx.user && ctx.user.isVerified) {
-    throw errors.forbidden('This can only be accessed by verified users')
-  }
-}
-
-export const isNotSignedIn: GqlMiddleware = (_, __, ctx) => {
-  if (ctx.user) {
-    throw errors.forbidden('This can only be accessed by the unauthenticated users')
-  }
-}
-
 const parseJwt = async (ctx: GraphQLContext) => {
   if (!ctx.jwt && ctx.token) {
     try {
@@ -63,8 +33,41 @@ const assertAuth = async (ctx: GraphQLContext) => {
   return ctx.user
 }
 
-const create = <Parent = unknown, Args = {}>(middleware: GqlMiddleware<Parent, Args>, requiresAuth = true): GqlMiddleware<Parent, Args> => {
-  return async (_, _args, ctx) => {
+type GqlMiddleware<Parent = unknown, Args = {}> = Resolver<void, Parent, GraphQLContext, Args>
+type GqlMiddlewareWithArgs<Args = {}> = GqlMiddleware<unknown, Args>
+
+export const isBlocked = () => (next: any): GqlMiddleware => (root, args, context, info) => {
+  if (context.user && context.user.isBlocked) {
+    throw errors.forbidden('This cannot be accessed by blocked users')
+  }
+  return next(root, args, context, info)
+}
+
+export const isNotVerified = () => (next: any): GqlMiddleware => (root, args, context, info) => {
+  if (context.user && context.user.isVerified) {
+    throw errors.forbidden('This can only be accessed by verified users')
+  }
+  return next(root, args, context, info)
+}
+
+export const isNotSignedIn = () => (next: any): GqlMiddleware => (root, args, context, info) => {
+  if (context.user) {
+    throw errors.forbidden('This can only be accessed by the unauthenticated users')
+  }
+  return next(root, args, context, info)
+}
+
+export const mobileIsAvailable = () => (next: any): GqlMiddlewareWithArgs<Input<{ mobile?: string }>> => async (root, args, context, info) => {
+  const { mobile } = getInput(args)
+  if (mobile && await model.user.byMobile(mobile)) {
+    throw errors.invalidInput('mobile', 'This mobile is already used')
+  }
+  return next(root, args, context, info)
+}
+
+
+const createMiddleware = <Parent = unknown, Args = {}>(middleware: GqlMiddleware<Parent, Args>, requiresAuth = true): GqlMiddleware<Parent, Args> => {
+  return async (root, args, ctx: any, info) => {
     const jwt = await parseJwt(ctx)
     if (jwt?.aud === Audience.Session || requiresAuth) {
       await assertAuth(ctx)
@@ -72,67 +75,67 @@ const create = <Parent = unknown, Args = {}>(middleware: GqlMiddleware<Parent, A
     if (ctx.user && model.user.isSuperadmin(ctx.user)) {
       return
     }
-    return middleware(_, _args, ctx)
+    return middleware(root, args, ctx, info)
   }
 }
 
-const createRoot = <Args = {}>(middleware: RootGqlMiddleware<Args>, requiresAuth = true) => {
-  return create(middleware, requiresAuth)
+const createMiddlewareWithArgs = <Args = {}>(middleware: GqlMiddlewareWithArgs<Args>, requiresAuth = true) => {
+  return createMiddleware(middleware, requiresAuth)
 }
 
-/** Used anywhere where a userId is included, to require it to match the session user's */
-export const isMyUser = createRoot<Input<{ userId?: string }>>((_, args, ctx) => {
-  const { userId } = getInput(args)
-  if (!userId) {
-    return
-  }
-  if (ctx.user.id !== userId) {
+export const isMe = () => (next: any) => createMiddleware<User>((user, args, context, info) => {
+  if (context.user.id !== user.id) {
     throw errors.forbidden('This can only be accessed by the users themselves')
   }
+  return next(user, args, context, info)
 })
 
-export const isSuperadmin = createRoot<Input<{}>>((_, _args, ctx) => {
-  if (ctx.user.status !== UserStatus.Superadmin) {
+export const isNotAvailable = () => (_next: any) => createMiddleware<User>((_user, _args, _context, _info) => {
+  throw errors.forbidden('This cannot be directly accessed')
+})
+
+export const isSuperadmin = () => (next: any) => createMiddlewareWithArgs<Input<{}>>((root, args, context, info) => {
+  if (context.user.status !== UserStatus.Superadmin) {
     throw errors.forbidden('This can only be accessed by the superadmins')
   }
+  return next(root, args, context, info)
 })
 
-export const isMemberOfPortfolio = createRoot<Input<{ portfolioId: string }>>(async (_, args, ctx) => {
+export const isMemberOfPortfolio = () => (next: any) => createMiddlewareWithArgs<Input<{ portfolioId: string }>>(async (root, args, context, info) => {
   const { portfolioId } = getInput(args)
-  const isMember = await model.membership.isMember(ctx.user.id, portfolioId)
+  const isMember = await model.membership.isMember(context.user.id, portfolioId)
   if (!isMember) {
     throw errors.forbidden(`You are not a member of the portfolio: ${portfolioId}`)
   }
+  return next(root, args, context, info)
 })
 
-
-export const isPortfolioAdmin = createRoot<Input<{ portfolioId: string }>>(async (_, args, ctx) => {
+export const isPortfolioAdmin = () => (next: any) => createMiddlewareWithArgs<Input<{ portfolioId: string }>>(async (root, args, context, info) => {
   const { portfolioId } = getInput(args)
-  const isAdmin = await model.membership.isAdmin(ctx.user.id, portfolioId)
+  const isAdmin = await model.membership.isAdmin(context.user.id, portfolioId)
   if (!isAdmin) {
     throw errors.forbidden(`You are not a Admin of the portfolio: ${portfolioId}`)
   }
+  return next(root, args, context, info)
 })
 
-export const isMemberOfPortfolioFund = createRoot<Input<{ portfolioFundId: string }>>(async (_, args, ctx) => {
+export const isMemberOfPortfolioFund = () => (next: any) => createMiddlewareWithArgs<Input<{ portfolioFundId: string }>>(async (root, args, context, info) => {
   const { portfolioFundId } = getInput(args)
   const portfolioFund = await model.portfolioFund.get(portfolioFundId)
-  return isMemberOfPortfolio(_, { portfolioId: portfolioFund.portfolioId }, ctx)
+  const portfolioId = portfolioFund.portfolioId
+  const isMember = await model.membership.isMember(context.user.id, portfolioId)
+  if (!isMember) {
+    throw errors.forbidden(`You are not a member of the portfolio: ${portfolioId}`)
+  }
+  return next(root, args, context, info)
 })
 
-export const isPortfolioFundAdmin = createRoot<Input<{ portfolioFundId: string }>>(async (_, args, ctx) => {
+export const isPortfolioFundAdmin = () => (next: any) => createMiddlewareWithArgs<Input<{ portfolioFundId: string }>>(async (root, args, context, info) => {
   const { portfolioFundId } = getInput(args)
   const portfolioFund = await model.portfolioFund.get(portfolioFundId)
-  const isAdmin = await model.membership.isAdmin(ctx.user.id, portfolioFund.portfolioId)
+  const isAdmin = await model.membership.isAdmin(context.user.id, portfolioFund.portfolioId)
   if (!isAdmin) {
     throw errors.forbidden(`You are not a Admin of the portfolio: ${portfolioFund.portfolioId}`)
   }
-})
-
-export const isMe = create<User>((user, _args, ctx) => {
-  return isMyUser(user, { userId: user.id }, ctx)
-})
-
-export const isNotAvailable = create<User>((_user, _args, _ctx) => {
-  throw errors.forbidden('This cannot be directly accessed')
+  return next(root, args, context, info)
 })
