@@ -9,6 +9,8 @@ jobs:
   deploy:
     name: deploy
     runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.ref_name == 'main' && 'prod' || 'dev' }}
     concurrency:
       group: ${{ github.ref }}
       cancel-in-progress: true
@@ -28,6 +30,7 @@ jobs:
           SEND_PULSE_API_USER_SECRET=${{ secrets.POSTFOO_SEND_PULSE_API_USER_SECRET }}
           AUTH_PRIVATE_KEY=\"${{ secrets.POSTFOO_AUTH_PRIVATE_KEY }}\"
           AUTH_PUBLIC_KEY=\"${{ secrets.POSTFOO_AUTH_PUBLIC_KEY }}\"
+          SENTRY_DSN=https://3d033d8a13db28584e868bcbc6963f26@o4508675017474048.ingest.us.sentry.io/4508677112332288
           " > .env
           cat .env
 
