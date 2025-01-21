@@ -1,4 +1,5 @@
 import chalk from 'chalk'
+import sentry from 'src/utils/sentry'
 
 const log = (...args: any[]) => {
   // eslint-disable-next-line no-console
@@ -17,6 +18,12 @@ const logger = {
   },
   error: (message: string) => {
     log('[ERROR]', chalk.red(message))
+
+    const err = new Error(message)
+    sentry.captureException(err, {
+      extra: { message },
+    })
+    err.message = message
   }
 }
 
