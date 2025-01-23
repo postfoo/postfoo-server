@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { GoogleAuth } from 'google-auth-library'
 import { google } from 'googleapis'
 import moment from 'moment'

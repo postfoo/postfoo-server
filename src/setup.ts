@@ -1,4 +1,4 @@
- 
+/* eslint-disable no-console */
 import aliases from 'module-alias'
 import path from 'path'
 import 'source-map-support/register'

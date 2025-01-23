@@ -1,8 +1,8 @@
+/* eslint-disable no-console */
 import chalk from 'chalk'
 import sentry from 'src/utils/sentry'
 
 const log = (...args: any[]) => {
-   
   console.log(args.join(' '))
 }
 

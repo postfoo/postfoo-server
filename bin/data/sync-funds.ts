@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // To be executed in the evening as per IST
 import db from 'src/db'
 import { getSheetData, isValidCell, print } from './functions'
