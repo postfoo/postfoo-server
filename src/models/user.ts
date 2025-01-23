@@ -26,7 +26,7 @@ export const fromJwt = async (claims?: jwt.Jwt): Promise<User | undefined> => {
     try {
       const user = await get(claims.sub)
       return user
-    } catch (err) {
+    } catch {
       // Can also happen when DB is reset and the client sends a JWT for an old user
       throw errors.unauthenticated('The session token is no longer valid')
     }

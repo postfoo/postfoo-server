@@ -74,7 +74,7 @@ export class Honeypot {
   public async check(formData: Record<string, string>) {
     let nameFieldName = this.config.nameFieldName ?? DEFAULT_NAME_FIELD_NAME
     if (this.config.randomizeNameFieldName) {
-      let actualName = this.getRandomizedNameFieldName(nameFieldName, formData)
+      const actualName = this.getRandomizedNameFieldName(nameFieldName, formData)
       if (actualName) {
         nameFieldName = actualName
       }
@@ -88,7 +88,7 @@ export class Honeypot {
       throw errors.unauthenticated('Missing honeypot input')
     }
 
-    let honeypotValue = formData[(nameFieldName)]
+    const honeypotValue = formData[(nameFieldName)]
 
     if (honeypotValue !== '') {
       throw errors.unauthenticated('Honeypot input not empty')
@@ -97,13 +97,13 @@ export class Honeypot {
       return
     }
 
-    let validFrom = formData[(this.validFromFieldName)]
+    const validFrom = formData[(this.validFromFieldName)]
 
     if (!validFrom) {
       throw errors.unauthenticated('Missing honeypot valid from input')
     }
 
-    let time = await this.decrypt(validFrom as string)
+    const time = await this.decrypt(validFrom as string)
     if (!time) {
       throw errors.unauthenticated('Invalid honeypot valid from input')
     }
@@ -117,7 +117,7 @@ export class Honeypot {
   }
 
   protected get nameFieldName() {
-    let fieldName = this.config.nameFieldName ?? DEFAULT_NAME_FIELD_NAME
+    const fieldName = this.config.nameFieldName ?? DEFAULT_NAME_FIELD_NAME
     if (!this.config.randomizeNameFieldName) {
       return fieldName
     }
@@ -136,7 +136,7 @@ export class Honeypot {
   }
 
   protected getRandomizedNameFieldName(nameFieldName: string, formData: Record<string, string>): string | undefined {
-    for (let key of Object.keys(formData)) {
+    for (const key of Object.keys(formData)) {
       if (!key.startsWith(nameFieldName)) {
         continue
       }

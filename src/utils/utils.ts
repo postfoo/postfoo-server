@@ -50,7 +50,7 @@ export const promise = <T>(): PromiseExtra<T> => {
   const promise = new Promise<T>((resolve, reject) => {
     extra = { resolve, reject }
   })
-  // @ts-expect-error
+  // @ts-expect-error Extra is being used before it is assigned any value
   return _.extend(promise, extra)
 }
 

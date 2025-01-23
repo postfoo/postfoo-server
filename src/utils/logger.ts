@@ -2,7 +2,7 @@ import chalk from 'chalk'
 import sentry from 'src/utils/sentry'
 
 const log = (...args: any[]) => {
-  // eslint-disable-next-line no-console
+   
   console.log(args.join(' '))
 }
 

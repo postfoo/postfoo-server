@@ -13,7 +13,7 @@ export interface GraphQLContext {
 
 // With this trick, db model types override their GraphQL counterpart
 export * from '@prisma/client'
-// @ts-expect-error
+// @ts-expect-error Override the prisma types.
 export * from './graphql'
 
 export type Nil = null | undefined
@@ -31,7 +31,7 @@ export type Queries = AllResolvers['Query']
 export type Permissions = {
   [K in keyof AllResolvers]?: {
     [R in keyof AllResolvers[K]]?: Required<AllResolvers[K]>[R] extends Func ?
-      Array<(...args: Parameters<Required<AllResolvers[K]>[R]>) => void | Promise<void>> : never
+      ((...args: Parameters<Required<AllResolvers[K]>[R]>) => void | Promise<void>)[] : never
   }
 }
 

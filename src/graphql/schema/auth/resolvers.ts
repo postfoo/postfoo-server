@@ -9,7 +9,7 @@ import * as errors from 'src/utils/errors'
 import { honeypot } from 'src/utils/honeypot'
 import { comparePassword, generateOtp, generateSalt, hashPassword } from 'src/utils/utils'
 
-const sendCode = async (args: RequireFields<MutationResendCodeArgs, 'input'>, isForgotPassword: boolean = false) => {
+const sendCode = async (args: RequireFields<MutationResendCodeArgs, 'input'>, isForgotPassword = false) => {
   const { userId, mobile } = getInput(args)
   let selectedUser: User | null = null
 
