@@ -81,7 +81,7 @@
     "google-auth-library": "^9.15.1",
     "googleapis": "^144.0.0",
     "graphql": "^16.10.0",
-    "graphql-scalars": "^1.24.0",
+    "graphql-scalars": "^1.24.1",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "mercurius": "^16.0.1",
