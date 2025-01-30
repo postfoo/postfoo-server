@@ -49,10 +49,10 @@
     "@graphql-codegen/typescript-resolvers": "^4.4.2",
     "@stylistic/eslint-plugin": "^3.0.1",
     "@total-typescript/ts-reset": "^0.6.1",
-    "@types/jsonwebtoken": "^9.0.7",
-    "@types/lodash": "^4.17.14",
+    "@types/jsonwebtoken": "^9.0.8",
+    "@types/lodash": "^4.17.15",
     "@types/module-alias": "^2.0.4",
-    "@types/node": "^22.10.7",
+    "@types/node": "^22.12.0",
     "@types/otp-generator": "^4.0.2",
     "concurrently": "^9.1.2",
     "copyfiles": "^2.4.1",
@@ -91,7 +91,7 @@
     "sendpulse-api": "^1.1.7",
     "source-map-support": "^0.5.21",
     "tslib": "^2.8.1",
-    "type-fest": "^4.32.0"
+    "type-fest": "^4.33.0"
   },
   "_moduleAliases": {
     "src": "dist"
