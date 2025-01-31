@@ -1,4 +1,5 @@
 import 'module-alias/register'
+import Sentry from 'src/utils/sentry'
 
 import cors from '@fastify/cors'
 import rateLimit from '@fastify/rate-limit'
@@ -8,7 +9,7 @@ import graphql from 'src/graphql'
 import { honeypot } from 'src/utils/honeypot'
 import logger from 'src/utils/logger'
 import pkg from 'src/utils/pkg'
-import Sentry from 'src/utils/sentry'
+
 const app = fastify({
   logger: true,
   ignoreTrailingSlash: true,
@@ -25,6 +26,8 @@ app.addHook('onSend', (_req, reply, _payload, done) => {
   done()
 })
 
+Sentry.setupFastifyErrorHandler(app)
+
 app.get('/', (_req, reply) => {
   reply.send('OK')
 })
@@ -37,10 +40,6 @@ app.get('/health', async (_req) => {
     RELEASE: process.env.RELEASE || '',
     RELEASE_AT: process.env.RELEASE_AT || '',
   }
-})
-
-app.get('/debug-sentry', function mainHandler(_req, _res) {
-  throw new Error('My first Sentry error!')
 })
 
 app.get('/get-honeypot-inputs', async (_req, reply) => {
