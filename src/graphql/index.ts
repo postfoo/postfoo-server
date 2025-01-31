@@ -51,7 +51,7 @@ async function setup(app: FastifyInstance) {
 
         scope.setTags({ 'graphql.name': gqlParams?.operationName || 'none' })
         scope.setExtra('query', gqlParams?.query)
-        if (gqlParams.variables) {
+        if (gqlParams?.variables) {
           scope.setContext('variables', gqlParams.variables)
         }
 
