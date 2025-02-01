@@ -64,6 +64,20 @@ export type CreatePortfolioInput = {
   name: Scalars['String']['input'];
 };
 
+export type CreatePortfolioStockInput = {
+  cost: Scalars['Float']['input'];
+  portfolioId: Scalars['ID']['input'];
+  stockId: Scalars['ID']['input'];
+  units: Scalars['Float']['input'];
+};
+
+export type CreateStockInput = {
+  exchange: Exchange;
+  lastNav: Scalars['Float']['input'];
+  name: Scalars['String']['input'];
+  symbol: Scalars['String']['input'];
+};
+
 export type DeleteFundInput = {
   fundId: Scalars['ID']['input'];
 };
@@ -74,6 +88,14 @@ export type DeletePortfolioFundInput = {
 
 export type DeletePortfolioInput = {
   portfolioId: Scalars['ID']['input'];
+};
+
+export type DeletePortfolioStockInput = {
+  portfolioStockId: Scalars['ID']['input'];
+};
+
+export type DeleteStockInput = {
+  stockId: Scalars['ID']['input'];
 };
 
 /**  Error codes  */
@@ -90,6 +112,14 @@ export enum ErrorCode {
   NOT_FOUND = 'NOT_FOUND',
   TOO_MANY_REQUESTS = 'TOO_MANY_REQUESTS',
   UNAUTHENTICATED = 'UNAUTHENTICATED'
+}
+
+export enum Exchange {
+  BSE = 'BSE',
+  LSE = 'LSE',
+  NASDAQ = 'NASDAQ',
+  NSE = 'NSE',
+  NYSE = 'NYSE'
 }
 
 export type ForgotPasswordInput = {
@@ -227,9 +257,13 @@ export type Mutation = {
   createFund: Fund;
   createPortfolio: Portfolio;
   createPortfolioFund: PortfolioFund;
+  createPortfolioStock: PortfolioStock;
+  createStock: Stock;
   deleteFund: SuccessPayload;
   deletePortfolio: SuccessPayload;
   deletePortfolioFund: SuccessPayload;
+  deletePortfolioStock: SuccessPayload;
+  deleteStock: SuccessPayload;
   forgotPassword: SuccessPayload;
   resendCode: SuccessPayload;
   resetPassword: SuccessPayload;
@@ -238,6 +272,8 @@ export type Mutation = {
   updateFund: Fund;
   updatePortfolio: Portfolio;
   updatePortfolioFund: PortfolioFund;
+  updatePortfolioStock: PortfolioStock;
+  updateStock: Stock;
   verifyCode: SuccessPayload;
 };
 
@@ -257,6 +293,16 @@ export type MutationCreatePortfolioFundArgs = {
 };
 
 
+export type MutationCreatePortfolioStockArgs = {
+  input: CreatePortfolioStockInput;
+};
+
+
+export type MutationCreateStockArgs = {
+  input: CreateStockInput;
+};
+
+
 export type MutationDeleteFundArgs = {
   input: DeleteFundInput;
 };
@@ -269,6 +315,16 @@ export type MutationDeletePortfolioArgs = {
 
 export type MutationDeletePortfolioFundArgs = {
   input: DeletePortfolioFundInput;
+};
+
+
+export type MutationDeletePortfolioStockArgs = {
+  input: DeletePortfolioStockInput;
+};
+
+
+export type MutationDeleteStockArgs = {
+  input: DeleteStockInput;
 };
 
 
@@ -309,6 +365,16 @@ export type MutationUpdatePortfolioArgs = {
 
 export type MutationUpdatePortfolioFundArgs = {
   input: UpdatePortfolioFundInput;
+};
+
+
+export type MutationUpdatePortfolioStockArgs = {
+  input: UpdatePortfolioStockInput;
+};
+
+
+export type MutationUpdateStockArgs = {
+  input: UpdateStockInput;
 };
 
 
@@ -377,6 +443,27 @@ export type PortfolioFundsPayload = PagePayload & {
   total: Scalars['Int']['output'];
 };
 
+export type PortfolioStock = Node & {
+  cost: Scalars['Float']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['ID']['output'];
+  portfolio: Portfolio;
+  stock: Stock;
+  units: Scalars['Float']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+};
+
+export type PortfolioStocksInput = {
+  page?: InputMaybe<PageInput>;
+  portfolioId: Scalars['ID']['input'];
+};
+
+export type PortfolioStocksPayload = PagePayload & {
+  nodes: Array<PortfolioStock>;
+  pageInfo: PageInfo;
+  total: Scalars['Int']['output'];
+};
+
 export type Query = {
   fund: Fund;
   funds: FundsPayload;
@@ -384,6 +471,10 @@ export type Query = {
   portfolio: Portfolio;
   portfolioFund: PortfolioFund;
   portfolioFunds: PortfolioFundsPayload;
+  portfolioStock: PortfolioStock;
+  portfolioStocks: PortfolioStocksPayload;
+  stock: Stock;
+  stocks: StocksPayload;
 };
 
 
@@ -409,6 +500,26 @@ export type QueryPortfolioFundArgs = {
 
 export type QueryPortfolioFundsArgs = {
   input: PortfolioFundsInput;
+};
+
+
+export type QueryPortfolioStockArgs = {
+  portfolioStockId: Scalars['ID']['input'];
+};
+
+
+export type QueryPortfolioStocksArgs = {
+  input: PortfolioStocksInput;
+};
+
+
+export type QueryStockArgs = {
+  stockId: Scalars['ID']['input'];
+};
+
+
+export type QueryStocksArgs = {
+  input?: InputMaybe<StocksInput>;
 };
 
 export type ResendCodeInput = {
@@ -440,6 +551,30 @@ export type SignUpInput = {
   password: Scalars['NonEmptyString']['input'];
 };
 
+export type Stock = Node & {
+  createdAt: Scalars['DateTime']['output'];
+  /**  Exchange + Symbol should be unique  */
+  exchange: Exchange;
+  id: Scalars['ID']['output'];
+  lastPrice: Scalars['Float']['output'];
+  name: Scalars['String']['output'];
+  symbol: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+};
+
+export type StocksInput = {
+  exchange?: InputMaybe<Exchange>;
+  page?: InputMaybe<PageInput>;
+  search?: InputMaybe<Scalars['String']['input']>;
+  symbol?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type StocksPayload = PagePayload & {
+  nodes: Array<Stock>;
+  pageInfo: PageInfo;
+  total: Scalars['Int']['output'];
+};
+
 export type SuccessPayload = {
   error?: Maybe<ErrorCode>;
 };
@@ -466,6 +601,20 @@ export type UpdatePortfolioInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   portfolioId: Scalars['ID']['input'];
+};
+
+export type UpdatePortfolioStockInput = {
+  cost?: InputMaybe<Scalars['Float']['input']>;
+  portfolioStockId: Scalars['ID']['input'];
+  units?: InputMaybe<Scalars['Float']['input']>;
+};
+
+export type UpdateStockInput = {
+  exchange?: InputMaybe<Exchange>;
+  lastNav: Scalars['Float']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
+  stockId: Scalars['ID']['input'];
+  symbol?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type User = Node & {

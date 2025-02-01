@@ -6,6 +6,7 @@ type Portfolio implements Node {
   description: String
   members: [Membership!]!
   funds: [PortfolioFund!]!
+  stocks: [PortfolioStock!]!
 }
 
 input CreatePortfolioInput {

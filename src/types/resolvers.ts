@@ -70,8 +70,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
-  Node: ( t.Code ) | ( t.Fund ) | ( t.Membership ) | ( t.Portfolio ) | ( t.PortfolioFund ) | ( t.User );
-  PagePayload: ( t.FundsPayload ) | ( t.PortfolioFundsPayload );
+  Node: ( t.Code ) | ( t.Fund ) | ( t.Membership ) | ( t.Portfolio ) | ( t.PortfolioFund ) | ( t.PortfolioStock ) | ( t.Stock ) | ( t.User );
+  PagePayload: ( t.FundsPayload ) | ( t.PortfolioFundsPayload ) | ( t.PortfolioStocksPayload ) | ( t.StocksPayload );
 };
 
 /** Mapping between all available schema types and the resolvers types */
@@ -82,13 +82,18 @@ export type ResolversTypes = {
   CreateFundInput: t.CreateFundInput;
   CreatePortfolioFundInput: t.CreatePortfolioFundInput;
   CreatePortfolioInput: t.CreatePortfolioInput;
+  CreatePortfolioStockInput: t.CreatePortfolioStockInput;
+  CreateStockInput: t.CreateStockInput;
   Date: ResolverTypeWrapper<t.Scalars['Date']['output']>;
   DateTime: ResolverTypeWrapper<t.Scalars['DateTime']['output']>;
   DeleteFundInput: t.DeleteFundInput;
   DeletePortfolioFundInput: t.DeletePortfolioFundInput;
   DeletePortfolioInput: t.DeletePortfolioInput;
+  DeletePortfolioStockInput: t.DeletePortfolioStockInput;
+  DeleteStockInput: t.DeleteStockInput;
   EmailAddress: ResolverTypeWrapper<t.Scalars['EmailAddress']['output']>;
   ErrorCode: t.ErrorCode;
+  Exchange: t.Exchange;
   Float: ResolverTypeWrapper<t.Scalars['Float']['output']>;
   ForgotPasswordInput: t.ForgotPasswordInput;
   Fund: ResolverTypeWrapper<t.Fund>;
@@ -112,17 +117,25 @@ export type ResolversTypes = {
   PortfolioFund: ResolverTypeWrapper<t.PortfolioFund>;
   PortfolioFundsInput: t.PortfolioFundsInput;
   PortfolioFundsPayload: ResolverTypeWrapper<t.PortfolioFundsPayload>;
+  PortfolioStock: ResolverTypeWrapper<t.PortfolioStock>;
+  PortfolioStocksInput: t.PortfolioStocksInput;
+  PortfolioStocksPayload: ResolverTypeWrapper<t.PortfolioStocksPayload>;
   Query: ResolverTypeWrapper<undefined>;
   ResendCodeInput: t.ResendCodeInput;
   ResetPasswordInput: t.ResetPasswordInput;
   SignInInput: t.SignInInput;
   SignUpInput: t.SignUpInput;
+  Stock: ResolverTypeWrapper<t.Stock>;
+  StocksInput: t.StocksInput;
+  StocksPayload: ResolverTypeWrapper<t.StocksPayload>;
   String: ResolverTypeWrapper<t.Scalars['String']['output']>;
   SuccessPayload: ResolverTypeWrapper<t.SuccessPayload>;
   URL: ResolverTypeWrapper<t.Scalars['URL']['output']>;
   UpdateFundInput: t.UpdateFundInput;
   UpdatePortfolioFundInput: t.UpdatePortfolioFundInput;
   UpdatePortfolioInput: t.UpdatePortfolioInput;
+  UpdatePortfolioStockInput: t.UpdatePortfolioStockInput;
+  UpdateStockInput: t.UpdateStockInput;
   User: ResolverTypeWrapper<t.User>;
   UserRole: t.UserRole;
   UserStatus: t.UserStatus;
@@ -138,11 +151,15 @@ export type ResolversParentTypes = {
   CreateFundInput: t.CreateFundInput;
   CreatePortfolioFundInput: t.CreatePortfolioFundInput;
   CreatePortfolioInput: t.CreatePortfolioInput;
+  CreatePortfolioStockInput: t.CreatePortfolioStockInput;
+  CreateStockInput: t.CreateStockInput;
   Date: t.Scalars['Date']['output'];
   DateTime: t.Scalars['DateTime']['output'];
   DeleteFundInput: t.DeleteFundInput;
   DeletePortfolioFundInput: t.DeletePortfolioFundInput;
   DeletePortfolioInput: t.DeletePortfolioInput;
+  DeletePortfolioStockInput: t.DeletePortfolioStockInput;
+  DeleteStockInput: t.DeleteStockInput;
   EmailAddress: t.Scalars['EmailAddress']['output'];
   Float: t.Scalars['Float']['output'];
   ForgotPasswordInput: t.ForgotPasswordInput;
@@ -164,17 +181,25 @@ export type ResolversParentTypes = {
   PortfolioFund: t.PortfolioFund;
   PortfolioFundsInput: t.PortfolioFundsInput;
   PortfolioFundsPayload: t.PortfolioFundsPayload;
+  PortfolioStock: t.PortfolioStock;
+  PortfolioStocksInput: t.PortfolioStocksInput;
+  PortfolioStocksPayload: t.PortfolioStocksPayload;
   Query: undefined;
   ResendCodeInput: t.ResendCodeInput;
   ResetPasswordInput: t.ResetPasswordInput;
   SignInInput: t.SignInInput;
   SignUpInput: t.SignUpInput;
+  Stock: t.Stock;
+  StocksInput: t.StocksInput;
+  StocksPayload: t.StocksPayload;
   String: t.Scalars['String']['output'];
   SuccessPayload: t.SuccessPayload;
   URL: t.Scalars['URL']['output'];
   UpdateFundInput: t.UpdateFundInput;
   UpdatePortfolioFundInput: t.UpdatePortfolioFundInput;
   UpdatePortfolioInput: t.UpdatePortfolioInput;
+  UpdatePortfolioStockInput: t.UpdatePortfolioStockInput;
+  UpdateStockInput: t.UpdateStockInput;
   User: t.User;
   VerifyCodeInput: t.VerifyCodeInput;
   Void: t.Scalars['Void']['output'];
@@ -246,9 +271,13 @@ export type MutationResolvers<ContextType = GraphQLContext, ParentType extends R
   createFund?: Resolver<ResolversTypes['Fund'], ParentType, ContextType, RequireFields<t.MutationCreateFundArgs, 'input'>>;
   createPortfolio?: Resolver<ResolversTypes['Portfolio'], ParentType, ContextType, RequireFields<t.MutationCreatePortfolioArgs, 'input'>>;
   createPortfolioFund?: Resolver<ResolversTypes['PortfolioFund'], ParentType, ContextType, RequireFields<t.MutationCreatePortfolioFundArgs, 'input'>>;
+  createPortfolioStock?: Resolver<ResolversTypes['PortfolioStock'], ParentType, ContextType, RequireFields<t.MutationCreatePortfolioStockArgs, 'input'>>;
+  createStock?: Resolver<ResolversTypes['Stock'], ParentType, ContextType, RequireFields<t.MutationCreateStockArgs, 'input'>>;
   deleteFund?: Resolver<ResolversTypes['SuccessPayload'], ParentType, ContextType, RequireFields<t.MutationDeleteFundArgs, 'input'>>;
   deletePortfolio?: Resolver<ResolversTypes['SuccessPayload'], ParentType, ContextType, RequireFields<t.MutationDeletePortfolioArgs, 'input'>>;
   deletePortfolioFund?: Resolver<ResolversTypes['SuccessPayload'], ParentType, ContextType, RequireFields<t.MutationDeletePortfolioFundArgs, 'input'>>;
+  deletePortfolioStock?: Resolver<ResolversTypes['SuccessPayload'], ParentType, ContextType, RequireFields<t.MutationDeletePortfolioStockArgs, 'input'>>;
+  deleteStock?: Resolver<ResolversTypes['SuccessPayload'], ParentType, ContextType, RequireFields<t.MutationDeleteStockArgs, 'input'>>;
   forgotPassword?: Resolver<ResolversTypes['SuccessPayload'], ParentType, ContextType, RequireFields<t.MutationForgotPasswordArgs, 'input'>>;
   resendCode?: Resolver<ResolversTypes['SuccessPayload'], ParentType, ContextType, RequireFields<t.MutationResendCodeArgs, 'input'>>;
   resetPassword?: Resolver<ResolversTypes['SuccessPayload'], ParentType, ContextType, RequireFields<t.MutationResetPasswordArgs, 'input'>>;
@@ -257,11 +286,13 @@ export type MutationResolvers<ContextType = GraphQLContext, ParentType extends R
   updateFund?: Resolver<ResolversTypes['Fund'], ParentType, ContextType, RequireFields<t.MutationUpdateFundArgs, 'input'>>;
   updatePortfolio?: Resolver<ResolversTypes['Portfolio'], ParentType, ContextType, RequireFields<t.MutationUpdatePortfolioArgs, 'input'>>;
   updatePortfolioFund?: Resolver<ResolversTypes['PortfolioFund'], ParentType, ContextType, RequireFields<t.MutationUpdatePortfolioFundArgs, 'input'>>;
+  updatePortfolioStock?: Resolver<ResolversTypes['PortfolioStock'], ParentType, ContextType, RequireFields<t.MutationUpdatePortfolioStockArgs, 'input'>>;
+  updateStock?: Resolver<ResolversTypes['Stock'], ParentType, ContextType, RequireFields<t.MutationUpdateStockArgs, 'input'>>;
   verifyCode?: Resolver<ResolversTypes['SuccessPayload'], ParentType, ContextType, RequireFields<t.MutationVerifyCodeArgs, 'input'>>;
 };
 
 export type NodeResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']> = {
-  __resolveType: TypeResolveFn<'Code' | 'Fund' | 'Membership' | 'Portfolio' | 'PortfolioFund' | 'User', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'Code' | 'Fund' | 'Membership' | 'Portfolio' | 'PortfolioFund' | 'PortfolioStock' | 'Stock' | 'User', ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
@@ -280,7 +311,7 @@ export type PageInfoResolvers<ContextType = GraphQLContext, ParentType extends R
 };
 
 export type PagePayloadResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['PagePayload'] = ResolversParentTypes['PagePayload']> = {
-  __resolveType: TypeResolveFn<'FundsPayload' | 'PortfolioFundsPayload', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'FundsPayload' | 'PortfolioFundsPayload' | 'PortfolioStocksPayload' | 'StocksPayload', ParentType, ContextType>;
   nodes?: Resolver<ReadonlyArray<ResolversTypes['Node']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -319,6 +350,24 @@ export type PortfolioFundsPayloadResolvers<ContextType = GraphQLContext, ParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type PortfolioStockResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['PortfolioStock'] = ResolversParentTypes['PortfolioStock']> = {
+  cost?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  portfolio?: Resolver<ResolversTypes['Portfolio'], ParentType, ContextType>;
+  stock?: Resolver<ResolversTypes['Stock'], ParentType, ContextType>;
+  units?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type PortfolioStocksPayloadResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['PortfolioStocksPayload'] = ResolversParentTypes['PortfolioStocksPayload']> = {
+  nodes?: Resolver<ReadonlyArray<ResolversTypes['PortfolioStock']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   fund?: Resolver<ResolversTypes['Fund'], ParentType, ContextType, RequireFields<t.QueryFundArgs, 'fundId'>>;
   funds?: Resolver<ResolversTypes['FundsPayload'], ParentType, ContextType, Partial<t.QueryFundsArgs>>;
@@ -326,6 +375,28 @@ export type QueryResolvers<ContextType = GraphQLContext, ParentType extends Reso
   portfolio?: Resolver<ResolversTypes['Portfolio'], ParentType, ContextType, RequireFields<t.QueryPortfolioArgs, 'portfolioId'>>;
   portfolioFund?: Resolver<ResolversTypes['PortfolioFund'], ParentType, ContextType, RequireFields<t.QueryPortfolioFundArgs, 'portfolioFundId'>>;
   portfolioFunds?: Resolver<ResolversTypes['PortfolioFundsPayload'], ParentType, ContextType, RequireFields<t.QueryPortfolioFundsArgs, 'input'>>;
+  portfolioStock?: Resolver<ResolversTypes['PortfolioStock'], ParentType, ContextType, RequireFields<t.QueryPortfolioStockArgs, 'portfolioStockId'>>;
+  portfolioStocks?: Resolver<ResolversTypes['PortfolioStocksPayload'], ParentType, ContextType, RequireFields<t.QueryPortfolioStocksArgs, 'input'>>;
+  stock?: Resolver<ResolversTypes['Stock'], ParentType, ContextType, RequireFields<t.QueryStockArgs, 'stockId'>>;
+  stocks?: Resolver<ResolversTypes['StocksPayload'], ParentType, ContextType, Partial<t.QueryStocksArgs>>;
+};
+
+export type StockResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['Stock'] = ResolversParentTypes['Stock']> = {
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  exchange?: Resolver<ResolversTypes['Exchange'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  lastPrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  symbol?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type StocksPayloadResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['StocksPayload'] = ResolversParentTypes['StocksPayload']> = {
+  nodes?: Resolver<ReadonlyArray<ResolversTypes['Stock']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type SuccessPayloadResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['SuccessPayload'] = ResolversParentTypes['SuccessPayload']> = {
@@ -379,7 +450,11 @@ export type Resolvers<ContextType = GraphQLContext> = {
   Portfolio?: PortfolioResolvers<ContextType>;
   PortfolioFund?: PortfolioFundResolvers<ContextType>;
   PortfolioFundsPayload?: PortfolioFundsPayloadResolvers<ContextType>;
+  PortfolioStock?: PortfolioStockResolvers<ContextType>;
+  PortfolioStocksPayload?: PortfolioStocksPayloadResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Stock?: StockResolvers<ContextType>;
+  StocksPayload?: StocksPayloadResolvers<ContextType>;
   SuccessPayload?: SuccessPayloadResolvers<ContextType>;
   URL?: GraphQLScalarType;
   User?: UserResolvers<ContextType>;

@@ -1,0 +1,53 @@
+type Stock implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  """ Exchange + Symbol should be unique """
+  exchange: Exchange!
+  symbol: String!
+  lastPrice: Float!
+}
+
+input StocksInput {
+  search: String
+  exchange: Exchange
+  symbol: String
+  page: PageInput
+}
+
+input CreateStockInput {
+  name: String!
+  exchange: Exchange!
+  symbol: String!
+  lastNav: Float!
+}
+
+input UpdateStockInput {
+  stockId: ID!
+  name: String
+  exchange: Exchange
+  symbol: String
+  lastNav: Float!
+}
+
+input DeleteStockInput {
+  stockId: ID!
+}
+
+type StocksPayload implements PagePayload {
+  nodes: [Stock!]!
+  pageInfo: PageInfo!
+  total: Int!
+}
+
+type Query {
+  stock(stockId: ID!): Stock!
+  stocks(input: StocksInput): StocksPayload!
+}
+
+type Mutation {
+  createStock(input: CreateStockInput!): Stock!
+  updateStock(input: UpdateStockInput!): Stock!
+  deleteStock(input: DeleteStockInput!): SuccessPayload!
+}

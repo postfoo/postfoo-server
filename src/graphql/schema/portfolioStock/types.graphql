@@ -1,0 +1,48 @@
+type PortfolioStock implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  stock: Stock!
+  portfolio: Portfolio!
+  units: Float!
+  cost: Float!
+}
+
+input CreatePortfolioStockInput {
+  portfolioId: ID!
+  stockId: ID!
+  units: Float!
+  cost: Float!
+}
+
+input UpdatePortfolioStockInput {
+  portfolioStockId: ID!
+  units: Float
+  cost: Float
+}
+
+input DeletePortfolioStockInput {
+  portfolioStockId: ID!
+}
+
+input PortfolioStocksInput {
+  portfolioId: ID!
+  page: PageInput
+}
+
+type PortfolioStocksPayload implements PagePayload {
+  nodes: [PortfolioStock!]!
+  pageInfo: PageInfo!
+  total: Int!
+}
+
+type Query {
+  portfolioStock(portfolioStockId: ID!): PortfolioStock!
+  portfolioStocks(input: PortfolioStocksInput!): PortfolioStocksPayload!
+}
+
+type Mutation {
+  createPortfolioStock(input: CreatePortfolioStockInput!): PortfolioStock!
+  updatePortfolioStock(input: UpdatePortfolioStockInput!): PortfolioStock!
+  deletePortfolioStock(input: DeletePortfolioStockInput!): SuccessPayload!
+}

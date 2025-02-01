@@ -52,13 +52,14 @@ model Code {
 }
 
 model Portfolio {
-  id          String          @id @default(nanoid(12))
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  id          String           @id @default(nanoid(12))
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
   name        String?
   description String?
   members     Membership[]
   funds       PortfolioFund[]
+  stocks      PortfolioStock[]
 }
 
 enum UserRole {
@@ -163,20 +164,20 @@ enum FundCategory {
 }
 
 model Fund {
-  id            String          @id @default(nanoid(12))
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  name          String
-  description   String?
-  plan          FundPlan        @default(Direct)
-  type          FundType?
-  category      FundCategory?
+  id             String          @id @default(nanoid(12))
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  name           String
+  description    String?
+  plan           FundPlan        @default(Direct)
+  type           FundType?
+  category       FundCategory?
   // Generally fund has only one symbol, but just in case if we need to support multiple symbols
   // to be to grab from other system or something
-  symbol1       String?
-  symbol2       String?
-  lastNav       Float
-  PortfolioFund PortfolioFund[]
+  symbol1        String?
+  symbol2        String?
+  lastNav        Float
+  PortfolioFunds PortfolioFund[]
 }
 
 model PortfolioFund {
@@ -191,4 +192,40 @@ model PortfolioFund {
   cost        Float     @default(0)
 
   @@unique([fundId, portfolioId])
+}
+
+enum Exchange {
+  // Bombay Stock Exchange
+  BSE
+  // National Stock Exchange
+  NSE
+  // New York
+  NYSE
+  // London
+  LSE
+  // NASDAQ
+  NASDAQ
+}
+
+model Stock {
+  id              String           @id @default(nanoid(12))
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  name            String
+  symbol          String
+  exchange        Exchange
+  lastPrice       Float
+  PortfolioStocks PortfolioStock[]
+}
+
+model PortfolioStock {
+  id          String    @id @default(nanoid(22))
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  portfolioId String
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id])
+  stockId     String
+  stock       Stock     @relation(fields: [stockId], references: [id])
+  units       Float     @default(0)
+  cost        Float     @default(0)
 }

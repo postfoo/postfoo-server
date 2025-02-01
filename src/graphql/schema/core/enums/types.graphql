@@ -95,3 +95,12 @@ enum FundCategory {
   INDEX_FUND
 }
 
+
+enum Exchange {
+  BSE
+  NSE
+  NYSE
+  LSE
+  NASDAQ
+}
+

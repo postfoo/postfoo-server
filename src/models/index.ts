@@ -5,6 +5,8 @@ export * as fund from './fund'
 export * as membership from './membership'
 export * as portfolio from './portfolio'
 export * as portfolioFund from './portfolioFund'
+export * as portfolioStock from './portfolioStock'
 export * as prisma from './prisma'
+export * as stock from './stock'
 export * as user from './user'
 
