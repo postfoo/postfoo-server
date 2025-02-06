@@ -29,7 +29,8 @@
     "lint:fix": "npm run lint -- --fix",
     "test": "exit 1",
     "ts": "tsx -r ./dist/setup",
-    "data:sync-funds": "npm run ts bin/data/sync-funds.ts"
+    "data:sync-funds": "npm run ts bin/data/sync-funds.ts",
+    "data:sync-stocks": "npm run ts bin/data/sync-stocks.ts"
   },
   "repository": {
     "type": "git",

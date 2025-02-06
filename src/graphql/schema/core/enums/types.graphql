@@ -97,7 +97,7 @@ enum FundCategory {
 
 
 enum Exchange {
-  BSE
+  BOM
   NSE
   NYSE
   LSE

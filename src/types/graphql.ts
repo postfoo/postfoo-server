@@ -115,7 +115,7 @@ export enum ErrorCode {
 }
 
 export enum Exchange {
-  BSE = 'BSE',
+  BOM = 'BOM',
   LSE = 'LSE',
   NASDAQ = 'NASDAQ',
   NSE = 'NSE',
@@ -419,6 +419,7 @@ export type Portfolio = Node & {
   id: Scalars['ID']['output'];
   members: Array<Membership>;
   name: Scalars['String']['output'];
+  stocks: Array<PortfolioStock>;
   updatedAt: Scalars['DateTime']['output'];
 };
 

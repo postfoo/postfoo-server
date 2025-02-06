@@ -328,6 +328,7 @@ export type PortfolioResolvers<ContextType = GraphQLContext, ParentType extends 
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   members?: Resolver<ReadonlyArray<ResolversTypes['Membership']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  stocks?: Resolver<ReadonlyArray<ResolversTypes['PortfolioStock']>, ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };

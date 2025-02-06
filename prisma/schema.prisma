@@ -196,7 +196,7 @@ model PortfolioFund {
 
 enum Exchange {
   // Bombay Stock Exchange
-  BSE
+  BOM
   // National Stock Exchange
   NSE
   // New York
