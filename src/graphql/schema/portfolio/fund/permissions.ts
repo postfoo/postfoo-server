@@ -7,8 +7,8 @@ const permissions = {
   },
   Mutation: {
     createPortfolioFund: [checks.isMemberOfPortfolio()],
-    updatePortfolioFund: [checks.isMemberOfPortfolioFund(), checks.isPortfolioFundAdmin()],
-    deletePortfolioFund: [checks.isMemberOfPortfolioFund(), checks.isPortfolioFundAdmin()],
+    updatePortfolioFund: [checks.isPortfolioFundAdmin()],
+    deletePortfolioFund: [checks.isPortfolioFundAdmin()],
   },
 }
 

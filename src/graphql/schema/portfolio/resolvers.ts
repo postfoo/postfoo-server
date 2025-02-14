@@ -14,10 +14,10 @@ const resolvers: Resolvers = {
     createPortfolio: async(_, args, ctx) => {
       const { name, description } = args.input
       const userId = ctx.user.id
-      const count = await db.membership.count({ where: { userId } })
-      if (count >= 10) {
-        // 10 folios is fair usage for now. Above it we can by pass for partiular users on this basis we understand the usage.
-        throw errors.invalidInput('general', 'You have reached the maximum number of portfolios. Please email admin@postfoo.com to increase your limit.')
+      const count = await db.portfolio.count({ where: { members: { some: { userId } } } })
+      const activeSubscription = await model.user.activeSubscription(userId)
+      if (count >= activeSubscription.portfolios) {
+        throw errors.invalidInput('general', 'You have reached the maximum number of allowed portfolios in your plan.')
       }
       return db.portfolio.create({ data: {
         name,

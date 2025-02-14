@@ -119,6 +119,10 @@ export type ResolversTypes = {
   PageInput: t.PageInput;
   PagePayload: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['PagePayload']>;
   PhoneNumber: ResolverTypeWrapper<t.Scalars['PhoneNumber']['output']>;
+  Plan: ResolverTypeWrapper<t.Plan>;
+  PlanPermission: ResolverTypeWrapper<t.PlanPermission>;
+  PlanPermissions: ResolverTypeWrapper<t.PlanPermissions>;
+  PlansPayload: ResolverTypeWrapper<t.PlansPayload>;
   Portfolio: ResolverTypeWrapper<t.Portfolio>;
   PortfolioFund: ResolverTypeWrapper<t.PortfolioFund>;
   PortfolioFundsInput: t.PortfolioFundsInput;
@@ -135,6 +139,7 @@ export type ResolversTypes = {
   StocksInput: t.StocksInput;
   StocksPayload: ResolverTypeWrapper<t.StocksPayload>;
   String: ResolverTypeWrapper<t.Scalars['String']['output']>;
+  SubscriptionPlan: t.SubscriptionPlan;
   SuccessPayload: ResolverTypeWrapper<t.SuccessPayload>;
   URL: ResolverTypeWrapper<t.Scalars['URL']['output']>;
   UpdateFieldInput: t.UpdateFieldInput;
@@ -190,6 +195,10 @@ export type ResolversParentTypes = {
   PageInput: t.PageInput;
   PagePayload: ResolversInterfaceTypes<ResolversParentTypes>['PagePayload'];
   PhoneNumber: t.Scalars['PhoneNumber']['output'];
+  Plan: t.Plan;
+  PlanPermission: t.PlanPermission;
+  PlanPermissions: t.PlanPermissions;
+  PlansPayload: t.PlansPayload;
   Portfolio: t.Portfolio;
   PortfolioFund: t.PortfolioFund;
   PortfolioFundsInput: t.PortfolioFundsInput;
@@ -356,6 +365,40 @@ export interface PhoneNumberScalarConfig extends GraphQLScalarTypeConfig<Resolve
   name: 'PhoneNumber';
 }
 
+export type PlanResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['Plan'] = ResolversParentTypes['Plan']> = {
+  description?: Resolver<ResolversTypes['NonEmptyString'], ParentType, ContextType>;
+  features?: Resolver<ReadonlyArray<ResolversTypes['NonEmptyString']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['NonEmptyString'], ParentType, ContextType>;
+  monthlyPrice?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  popular?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['NonEmptyString'], ParentType, ContextType>;
+  yearlyPrice?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type PlanPermissionResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['PlanPermission'] = ResolversParentTypes['PlanPermission']> = {
+  familyMembers?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  funds?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  portfolios?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  schemes?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  stocks?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  uploadFiles?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type PlanPermissionsResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['PlanPermissions'] = ResolversParentTypes['PlanPermissions']> = {
+  ADVANCED?: Resolver<t.Maybe<ResolversTypes['PlanPermission']>, ParentType, ContextType>;
+  BASIC?: Resolver<t.Maybe<ResolversTypes['PlanPermission']>, ParentType, ContextType>;
+  PRO?: Resolver<t.Maybe<ResolversTypes['PlanPermission']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type PlansPayloadResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['PlansPayload'] = ResolversParentTypes['PlansPayload']> = {
+  planPermissions?: Resolver<ResolversTypes['PlanPermissions'], ParentType, ContextType>;
+  plans?: Resolver<ReadonlyArray<ResolversTypes['Plan']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type PortfolioResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['Portfolio'] = ResolversParentTypes['Portfolio']> = {
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<t.Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -410,6 +453,7 @@ export type QueryResolvers<ContextType = GraphQLContext, ParentType extends Reso
   fund?: Resolver<ResolversTypes['Fund'], ParentType, ContextType, RequireFields<t.QueryFundArgs, 'fundId'>>;
   funds?: Resolver<ResolversTypes['FundsPayload'], ParentType, ContextType, Partial<t.QueryFundsArgs>>;
   me?: Resolver<t.Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  plans?: Resolver<ResolversTypes['PlansPayload'], ParentType, ContextType>;
   portfolio?: Resolver<ResolversTypes['Portfolio'], ParentType, ContextType, RequireFields<t.QueryPortfolioArgs, 'portfolioId'>>;
   portfolioFund?: Resolver<ResolversTypes['PortfolioFund'], ParentType, ContextType, RequireFields<t.QueryPortfolioFundArgs, 'portfolioFundId'>>;
   portfolioFunds?: Resolver<ResolversTypes['PortfolioFundsPayload'], ParentType, ContextType, RequireFields<t.QueryPortfolioFundsArgs, 'input'>>;
@@ -488,6 +532,10 @@ export type Resolvers<ContextType = GraphQLContext> = {
   PageInfo?: PageInfoResolvers<ContextType>;
   PagePayload?: PagePayloadResolvers<ContextType>;
   PhoneNumber?: GraphQLScalarType;
+  Plan?: PlanResolvers<ContextType>;
+  PlanPermission?: PlanPermissionResolvers<ContextType>;
+  PlanPermissions?: PlanPermissionsResolvers<ContextType>;
+  PlansPayload?: PlansPayloadResolvers<ContextType>;
   Portfolio?: PortfolioResolvers<ContextType>;
   PortfolioFund?: PortfolioFundResolvers<ContextType>;
   PortfolioFundsPayload?: PortfolioFundsPayloadResolvers<ContextType>;

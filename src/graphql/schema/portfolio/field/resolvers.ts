@@ -14,12 +14,20 @@ const resolvers: Resolvers = {
     },
   },
   Mutation: {
-    createField: async(_, args, _ctx) => {
+    createField: async(_, args, ctx) => {
       const { name, value, portfolioId } = args.input
+
       const count = await db.field.count({ where: { portfolioId } })
       if (count >= 200) {
-        // 200 fieles is fair usage for now. Above it we can by pass for partiular users on this basis we understand the usage.
-        throw errors.invalidInput('general', 'You have reached the maximum number of fields allowed. Please email admin@postfoo.com to increase your limit.')
+        // In general do not allow more than 200 fields. TODO:: Revisit later to increase this depending on the
+        // how many custom fields are needed.
+        throw errors.invalidInput('general', 'You have reached the maximum number of fields allowed. Please contact support to increase your limit.')
+      }
+
+      const countByName = await db.field.count({ where: { portfolioId, name } })
+      const activeSubscription = await model.user.activeSubscription(ctx.user.id)
+      if (countByName >= activeSubscription.schemes) {
+        throw errors.invalidInput('general', `You have reached the maximum number of allowed ${name} fields in your plan.`)
       }
       return db.field.create({ data: { name, value, portfolioId } })
     },

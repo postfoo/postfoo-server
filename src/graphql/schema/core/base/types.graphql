@@ -50,3 +50,37 @@ enum ErrorCode {
 type SuccessPayload {
   error: ErrorCode
 }
+
+type Plan {
+  id: NonEmptyString!
+  title: NonEmptyString!
+  monthlyPrice: Int!
+  yearlyPrice: Int!
+  description: NonEmptyString!
+  features: [NonEmptyString!]!
+  popular: Boolean!
+}
+
+type PlanPermission {
+  portfolios: Int!
+  funds: Int!
+  stocks: Int!
+  schemes: Int!
+  familyMembers: Int!
+  uploadFiles: Boolean!
+}
+
+type PlanPermissions {
+  BASIC: PlanPermission
+  PRO: PlanPermission
+  ADVANCED: PlanPermission
+}
+
+type PlansPayload {
+  plans: [Plan!]!
+  planPermissions: PlanPermissions!
+}
+
+type Query {
+  plans: PlansPayload!
+}

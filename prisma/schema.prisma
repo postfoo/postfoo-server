@@ -26,19 +26,37 @@ enum UserStatus {
 }
 
 model User {
-  id          String       @id @default(nanoid(12))
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  mobile      String       @unique
-  isVerified  Boolean      @default(false)
-  status      UserStatus   @default(User)
-  isBlocked   Boolean      @default(false)
-  password    String
-  salt        String       @default("")
-  firstName   String
-  lastName    String?
-  codes       Code[]
-  memberships Membership[]
+  id            String         @id @default(nanoid(12))
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  mobile        String         @unique
+  isVerified    Boolean        @default(false)
+  status        UserStatus     @default(User)
+  isBlocked     Boolean        @default(false)
+  password      String
+  salt          String         @default("")
+  firstName     String
+  lastName      String?
+  codes         Code[]
+  memberships   Membership[]
+  subscriptions Subscription[]
+}
+
+enum SubscriptionPlan {
+  BASIC
+  PRO
+  ADVANCED
+}
+
+model Subscription {
+  id        String           @id @default(nanoid(12))
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan      SubscriptionPlan
+  startDate DateTime
+  endDate   DateTime
 }
 
 model Code {
@@ -239,6 +257,4 @@ model Field {
   portfolio   Portfolio @relation(fields: [portfolioId], references: [id])
   name        String
   value       Json      @default("{}")
-
-  @@unique([portfolioId, name])
 }

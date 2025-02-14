@@ -457,6 +457,36 @@ export type PagePayload = {
   total: Scalars['Int']['output'];
 };
 
+export type Plan = {
+  description: Scalars['NonEmptyString']['output'];
+  features: Array<Scalars['NonEmptyString']['output']>;
+  id: Scalars['NonEmptyString']['output'];
+  monthlyPrice: Scalars['Int']['output'];
+  popular: Scalars['Boolean']['output'];
+  title: Scalars['NonEmptyString']['output'];
+  yearlyPrice: Scalars['Int']['output'];
+};
+
+export type PlanPermission = {
+  familyMembers: Scalars['Int']['output'];
+  funds: Scalars['Int']['output'];
+  portfolios: Scalars['Int']['output'];
+  schemes: Scalars['Int']['output'];
+  stocks: Scalars['Int']['output'];
+  uploadFiles: Scalars['Boolean']['output'];
+};
+
+export type PlanPermissions = {
+  ADVANCED?: Maybe<PlanPermission>;
+  BASIC?: Maybe<PlanPermission>;
+  PRO?: Maybe<PlanPermission>;
+};
+
+export type PlansPayload = {
+  planPermissions: PlanPermissions;
+  plans: Array<Plan>;
+};
+
 export type Portfolio = Node & {
   createdAt: Scalars['DateTime']['output'];
   description?: Maybe<Scalars['String']['output']>;
@@ -516,6 +546,7 @@ export type Query = {
   fund: Fund;
   funds: FundsPayload;
   me?: Maybe<User>;
+  plans: PlansPayload;
   portfolio: Portfolio;
   portfolioFund: PortfolioFund;
   portfolioFunds: PortfolioFundsPayload;
@@ -632,6 +663,12 @@ export type StocksPayload = PagePayload & {
   pageInfo: PageInfo;
   total: Scalars['Int']['output'];
 };
+
+export enum SubscriptionPlan {
+  ADVANCED = 'ADVANCED',
+  BASIC = 'BASIC',
+  PRO = 'PRO'
+}
 
 export type SuccessPayload = {
   error?: Maybe<ErrorCode>;

@@ -1,6 +1,7 @@
+import { planPermissions } from 'src/data/plans'
 import db from 'src/db'
 import { whereId } from 'src/models/core'
-import { User, UserStatus } from 'src/types'
+import { SubscriptionPlan, User, UserStatus } from 'src/types'
 import * as errors from 'src/utils/errors'
 import * as jwt from 'src/utils/jwt'
 import { canonicalMobile } from 'src/utils/utils'
@@ -19,6 +20,13 @@ export const byMobile = (mobile: string) => {
 
 export const verifyUser = async (userId: string) => {
   await db.user.update({ where: { id: userId }, data: { isVerified: true } })
+}
+
+export const activeSubscription = async (userId: string) => {
+  const subscription = await db.subscription.findFirst({
+    where: { userId, endDate: { lt: new Date() } },
+  })
+  return planPermissions[subscription?.plan || SubscriptionPlan.BASIC]
 }
 
 export const fromJwt = async (claims?: jwt.Jwt): Promise<User | undefined> => {

@@ -4,6 +4,13 @@ enum UserStatus {
 }
 
 
+enum SubscriptionPlan {
+  BASIC
+  PRO
+  ADVANCED
+}
+
+
 enum UserRole {
   Member
   Admin

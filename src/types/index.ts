@@ -47,3 +47,23 @@ export interface PagePayload<T extends Node> {
   pageInfo: PageInfo,
   total: number,
 }
+
+export type Plan = {
+  // TODO: Should have been SubscriptionPlan
+  id: string,
+  title: string,
+  monthlyPrice: number,
+  yearlyPrice: number,
+  description: string,
+  features: string[],
+  popular: boolean,
+}
+
+export type PlanPermission = {
+  portfolios: number,
+  funds: number,
+  stocks: number,
+  schemes: number,
+  familyMembers: number,
+  uploadFiles: boolean,
+}
