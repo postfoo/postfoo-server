@@ -460,7 +460,7 @@ export type PagePayload = {
 export type Plan = {
   description: Scalars['NonEmptyString']['output'];
   features: Array<Scalars['NonEmptyString']['output']>;
-  id: Scalars['NonEmptyString']['output'];
+  id: SubscriptionPlan;
   monthlyPrice: Scalars['Int']['output'];
   popular: Scalars['Boolean']['output'];
   title: Scalars['NonEmptyString']['output'];
@@ -470,20 +470,15 @@ export type Plan = {
 export type PlanPermission = {
   familyMembers: Scalars['Int']['output'];
   funds: Scalars['Int']['output'];
+  id: SubscriptionPlan;
   portfolios: Scalars['Int']['output'];
   schemes: Scalars['Int']['output'];
   stocks: Scalars['Int']['output'];
   uploadFiles: Scalars['Boolean']['output'];
 };
 
-export type PlanPermissions = {
-  ADVANCED?: Maybe<PlanPermission>;
-  BASIC?: Maybe<PlanPermission>;
-  PRO?: Maybe<PlanPermission>;
-};
-
 export type PlansPayload = {
-  planPermissions: PlanPermissions;
+  planPermissions: Array<PlanPermission>;
   plans: Array<Plan>;
 };
 

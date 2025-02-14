@@ -1,4 +1,5 @@
-import { Plan, PlanPermission, SubscriptionPlan } from 'src/types'
+import { Plan, PlanPermission } from 'src/types'
+import { SubscriptionPlan } from 'src/types/graphql'
 
 export const plans: Plan[] = [
   {
@@ -30,8 +31,9 @@ export const plans: Plan[] = [
   },
 ]
 
-export const planPermissions: Record<SubscriptionPlan, PlanPermission> = {
-  [SubscriptionPlan.BASIC]: {
+export const planPermissions: PlanPermission[] = [
+  {
+    id: SubscriptionPlan.BASIC,
     portfolios: 1,
     funds: 5,
     stocks: 30,
@@ -40,7 +42,8 @@ export const planPermissions: Record<SubscriptionPlan, PlanPermission> = {
     familyMembers: 0,
     uploadFiles: false,
   },
-  [SubscriptionPlan.PRO]: {
+  {
+    id: SubscriptionPlan.PRO,
     portfolios: 5,
     funds: 15,
     stocks: 100,
@@ -49,7 +52,8 @@ export const planPermissions: Record<SubscriptionPlan, PlanPermission> = {
     familyMembers: 2,
     uploadFiles: false,
   },
-  [SubscriptionPlan.ADVANCED]: {
+  {
+    id: SubscriptionPlan.ADVANCED,
     portfolios: 10,
     funds: 30,
     stocks: 200,
@@ -58,4 +62,4 @@ export const planPermissions: Record<SubscriptionPlan, PlanPermission> = {
     familyMembers: 5,
     uploadFiles: true,
   },
-}
+]

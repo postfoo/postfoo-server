@@ -6,7 +6,7 @@ const resolvers: Resolvers = {
     plans: (_, _args, _ctx) => {
       return {
         plans,
-        planPermissions
+        planPermissions,
       }
     },
   },

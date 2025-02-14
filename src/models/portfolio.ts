@@ -1,3 +1,4 @@
+import { keyBy } from 'lodash'
 import { planPermissions } from 'src/data/plans'
 import db from 'src/db'
 import { whereId } from 'src/models/core'
@@ -8,6 +9,8 @@ export const get = (entity: string) => {
   return db.portfolio.findUniqueOrThrow(whereId(entity))
 }
 
+
+const planPermissionsMap = keyBy(planPermissions, p => p.id)
 export const activeSubscription = async (portfolioId: string) => {
   // If portfolio exists.
   await get(portfolioId)
@@ -19,5 +22,5 @@ export const activeSubscription = async (portfolioId: string) => {
     const user = members[0].userId
     return await activeUserSubscription(user)
   }
-  return planPermissions[SubscriptionPlan.BASIC]
+  return planPermissionsMap[SubscriptionPlan.BASIC]
 }

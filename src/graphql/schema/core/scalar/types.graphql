@@ -14,6 +14,7 @@ scalar PhoneNumber
 scalar EmailAddress
 scalar JWT
 scalar URL
+""" Can take valid scalar values also """
 scalar Json
-""" Same as Json but validates it's a plain object """
+""" Same as Json but validates it's a object """
 scalar JsonObject

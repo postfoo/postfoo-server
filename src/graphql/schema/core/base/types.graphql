@@ -52,7 +52,7 @@ type SuccessPayload {
 }
 
 type Plan {
-  id: NonEmptyString!
+  id: SubscriptionPlan!
   title: NonEmptyString!
   monthlyPrice: Int!
   yearlyPrice: Int!
@@ -62,6 +62,7 @@ type Plan {
 }
 
 type PlanPermission {
+  id: SubscriptionPlan!
   portfolios: Int!
   funds: Int!
   stocks: Int!
@@ -70,15 +71,9 @@ type PlanPermission {
   uploadFiles: Boolean!
 }
 
-type PlanPermissions {
-  BASIC: PlanPermission
-  PRO: PlanPermission
-  ADVANCED: PlanPermission
-}
-
 type PlansPayload {
   plans: [Plan!]!
-  planPermissions: PlanPermissions!
+  planPermissions: [PlanPermission!]!
 }
 
 type Query {

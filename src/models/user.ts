@@ -1,3 +1,4 @@
+import { keyBy } from 'lodash'
 import { planPermissions } from 'src/data/plans'
 import db from 'src/db'
 import { whereId } from 'src/models/core'
@@ -22,11 +23,12 @@ export const verifyUser = async (userId: string) => {
   await db.user.update({ where: { id: userId }, data: { isVerified: true } })
 }
 
+const planPermissionsMap = keyBy(planPermissions, p => p.id)
 export const activeSubscription = async (userId: string) => {
   const subscription = await db.subscription.findFirst({
     where: { userId, endDate: { lt: new Date() } },
   })
-  return planPermissions[subscription?.plan || SubscriptionPlan.BASIC]
+  return planPermissionsMap[subscription?.plan || SubscriptionPlan.BASIC]
 }
 
 export const fromJwt = async (claims?: jwt.Jwt): Promise<User | undefined> => {

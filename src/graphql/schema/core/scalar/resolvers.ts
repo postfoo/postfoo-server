@@ -30,9 +30,11 @@ export const resolvers: Resolvers = {
   ['ID' as any]: NonEmptyStringResolver,
   Json: JSONResolver,
   JsonObject: JSONObjectResolver,
-};
+}
 
-// Otherwise it uses the name of the scalar `NonEmptyStringResolver`
-(resolvers as any)['ID'].name = 'ID'
+// Otherwise it uses the name of the scalar e.g. `NonEmptyStringResolver`
+for (const name in resolvers) {
+  (resolvers as any)[name].name = name
+}
 
 export default resolvers
