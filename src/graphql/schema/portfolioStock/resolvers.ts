@@ -28,8 +28,8 @@ const resolvers: Resolvers = {
       await model.stock.get(stockId)
 
       const count = await db.portfolioStock.count({ where: { portfolioId } })
-      if (count >= 5) {
-        // 10 folios is fair usage for now. Above it we can by pass for partiular users on this basis we understand the usage.
+      if (count >= 100) {
+        // 100 stocks is fair usage for now. Above it we can by pass for partiular users on this basis we understand the usage.
         throw errors.invalidInput('general', 'You have reached the maximum number of stocks. Please upgrade your account to add more stocks.')
       }
 

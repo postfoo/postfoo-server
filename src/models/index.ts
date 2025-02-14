@@ -1,5 +1,6 @@
 export * as auth from './auth'
 export * as code from './code'
+export * as field from './field'
 export * as filter from './filter'
 export * as fund from './fund'
 export * as membership from './membership'

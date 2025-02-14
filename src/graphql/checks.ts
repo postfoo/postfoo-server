@@ -161,3 +161,24 @@ export const isPortfolioStockAdmin = () => (next: any) => createMiddlewareWithAr
   }
   return next(root, args, context, info)
 })
+
+export const isMemberOfPortfolioField = () => (next: any) => createMiddlewareWithArgs<Input<{ fieldId: string }>>(async (root, args, context, info) => {
+  const { fieldId } = getInput(args)
+  const field = await model.field.get(fieldId)
+  const portfolioId = field.portfolioId
+  const isMember = await model.membership.isMember(context.user.id, portfolioId)
+  if (!isMember) {
+    throw errors.forbidden(`You are not a member of the portfolio: ${portfolioId}`)
+  }
+  return next(root, args, context, info)
+})
+
+export const isPortfolioFieldAdmin = () => (next: any) => createMiddlewareWithArgs<Input<{ fieldId: string }>>(async (root, args, context, info) => {
+  const { fieldId } = getInput(args)
+  const field = await model.field.get(fieldId)
+  const isAdmin = await model.membership.isAdmin(context.user.id, field.portfolioId)
+  if (!isAdmin) {
+    throw errors.forbidden(`You are not a Admin of the portfolio: ${field.portfolioId}`)
+  }
+  return next(root, args, context, info)
+})

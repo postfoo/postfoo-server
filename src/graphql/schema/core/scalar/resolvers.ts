@@ -1,5 +1,5 @@
 import { GraphQLScalarType } from 'graphql'
-import { BigIntResolver, DateResolver, DateTimeResolver, EmailAddressResolver, JWTResolver, NonEmptyStringResolver, PhoneNumberResolver, URLResolver, VoidResolver } from 'graphql-scalars'
+import { BigIntResolver, DateResolver, DateTimeResolver, EmailAddressResolver, JSONObjectResolver, JSONResolver, JWTResolver, NonEmptyStringResolver, PhoneNumberResolver, URLResolver, VoidResolver } from 'graphql-scalars'
 import { Resolvers } from 'src/types/resolvers'
 import { URL } from 'url'
 
@@ -28,6 +28,8 @@ export const resolvers: Resolvers = {
   URL: extendScalar(URLResolver, (url: URL) => url.href),
   PhoneNumber: PhoneNumberResolver,
   ['ID' as any]: NonEmptyStringResolver,
+  Json: JSONResolver,
+  JsonObject: JSONObjectResolver,
 };
 
 // Otherwise it uses the name of the scalar `NonEmptyStringResolver`

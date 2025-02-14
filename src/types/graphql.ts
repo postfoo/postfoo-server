@@ -22,6 +22,9 @@ export type Scalars = {
   DateTime: { input: string; output: string; }
   EmailAddress: { input: string; output: string; }
   JWT: { input: string; output: string; }
+  Json: { input: any; output: any; }
+  /**  Same as Json but validates it's a plain object  */
+  JsonObject: { input: any; output: any; }
   NonEmptyString: { input: string; output: string; }
   /**  E.164 specification  */
   PhoneNumber: { input: string; output: string; }
@@ -39,6 +42,12 @@ export type Code = Node & {
   updatedAt: Scalars['DateTime']['output'];
   /**  The user that this code is for  */
   user: User;
+};
+
+export type CreateFieldInput = {
+  name: Scalars['NonEmptyString']['input'];
+  portfolioId: Scalars['ID']['input'];
+  value: Scalars['JsonObject']['input'];
 };
 
 export type CreateFundInput = {
@@ -76,6 +85,10 @@ export type CreateStockInput = {
   lastNav: Scalars['Float']['input'];
   name: Scalars['String']['input'];
   symbol: Scalars['String']['input'];
+};
+
+export type DeleteFieldInput = {
+  fieldId: Scalars['ID']['input'];
 };
 
 export type DeleteFundInput = {
@@ -121,6 +134,20 @@ export enum Exchange {
   NSE = 'NSE',
   NYSE = 'NYSE'
 }
+
+export type Field = Node & {
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['NonEmptyString']['output'];
+  portfolio: Portfolio;
+  updatedAt: Scalars['DateTime']['output'];
+  value: Scalars['JsonObject']['output'];
+};
+
+export type FieldsInput = {
+  name?: InputMaybe<Scalars['NonEmptyString']['input']>;
+  portfolioId: Scalars['ID']['input'];
+};
 
 export type ForgotPasswordInput = {
   from__confirm?: InputMaybe<Scalars['String']['input']>;
@@ -254,11 +281,13 @@ export type Membership = Node & {
 };
 
 export type Mutation = {
+  createField: Field;
   createFund: Fund;
   createPortfolio: Portfolio;
   createPortfolioFund: PortfolioFund;
   createPortfolioStock: PortfolioStock;
   createStock: Stock;
+  deleteField: SuccessPayload;
   deleteFund: SuccessPayload;
   deletePortfolio: SuccessPayload;
   deletePortfolioFund: SuccessPayload;
@@ -269,12 +298,18 @@ export type Mutation = {
   resetPassword: SuccessPayload;
   signIn: User;
   signUp: User;
+  updateField: Field;
   updateFund: Fund;
   updatePortfolio: Portfolio;
   updatePortfolioFund: PortfolioFund;
   updatePortfolioStock: PortfolioStock;
   updateStock: Stock;
   verifyCode: SuccessPayload;
+};
+
+
+export type MutationCreateFieldArgs = {
+  input: CreateFieldInput;
 };
 
 
@@ -300,6 +335,11 @@ export type MutationCreatePortfolioStockArgs = {
 
 export type MutationCreateStockArgs = {
   input: CreateStockInput;
+};
+
+
+export type MutationDeleteFieldArgs = {
+  input: DeleteFieldInput;
 };
 
 
@@ -350,6 +390,11 @@ export type MutationSignInArgs = {
 
 export type MutationSignUpArgs = {
   input: SignUpInput;
+};
+
+
+export type MutationUpdateFieldArgs = {
+  input: UpdateFieldInput;
 };
 
 
@@ -466,6 +511,8 @@ export type PortfolioStocksPayload = PagePayload & {
 };
 
 export type Query = {
+  field: Field;
+  fields: Array<Field>;
   fund: Fund;
   funds: FundsPayload;
   me?: Maybe<User>;
@@ -476,6 +523,16 @@ export type Query = {
   portfolioStocks: PortfolioStocksPayload;
   stock: Stock;
   stocks: StocksPayload;
+};
+
+
+export type QueryFieldArgs = {
+  fieldId: Scalars['ID']['input'];
+};
+
+
+export type QueryFieldsArgs = {
+  input: FieldsInput;
 };
 
 
@@ -578,6 +635,12 @@ export type StocksPayload = PagePayload & {
 
 export type SuccessPayload = {
   error?: Maybe<ErrorCode>;
+};
+
+export type UpdateFieldInput = {
+  fieldId: Scalars['ID']['input'];
+  name: Scalars['NonEmptyString']['input'];
+  value: Scalars['JsonObject']['input'];
 };
 
 export type UpdateFundInput = {

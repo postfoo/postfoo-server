@@ -1,0 +1,41 @@
+type Field implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  portfolio: Portfolio!
+  name: NonEmptyString!
+  value: JsonObject!
+}
+
+input CreateFieldInput {
+  portfolioId: ID!
+  name: NonEmptyString!
+  value: JsonObject!
+}
+
+input UpdateFieldInput {
+  fieldId: ID!
+  name: NonEmptyString!
+  value: JsonObject!
+}
+
+input DeleteFieldInput {
+  fieldId: ID!
+}
+
+input FieldsInput {
+  portfolioId: ID!
+  name: NonEmptyString
+}
+
+type Query {
+  field(fieldId: ID!): Field!
+  fields(input: FieldsInput!): [Field!]!
+}
+
+type Mutation {
+  createField(input: CreateFieldInput!): Field!
+  updateField(input: UpdateFieldInput!): Field!
+  deleteField(input: DeleteFieldInput!): SuccessPayload!
+}
+

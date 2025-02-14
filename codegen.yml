@@ -20,6 +20,9 @@ config:
     PhoneNumber: string
     Void: void
     NonEmptyString: string
+    Json: any
+    JsonObject: any
+
 generates:
   src/types/graphql.ts:
     plugins:

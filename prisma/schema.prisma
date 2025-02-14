@@ -60,6 +60,7 @@ model Portfolio {
   members     Membership[]
   funds       PortfolioFund[]
   stocks      PortfolioStock[]
+  fields      Field[]
 }
 
 enum UserRole {
@@ -228,4 +229,16 @@ model PortfolioStock {
   stock       Stock     @relation(fields: [stockId], references: [id])
   units       Float     @default(0)
   cost        Float     @default(0)
+}
+
+model Field {
+  id          String    @id @default(nanoid(22))
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  portfolioId String
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id])
+  name        String
+  value       Json      @default("{}")
+
+  @@unique([portfolioId, name])
 }

@@ -28,8 +28,8 @@ const resolvers: Resolvers = {
       await model.fund.get(fundId)
 
       const count = await db.portfolioFund.count({ where: { portfolioId } })
-      if (count >= 5) {
-        // 10 folios is fair usage for now. Above it we can by pass for partiular users on this basis we understand the usage.
+      if (count >= 10) {
+        // 10 funds is fair usage for now. Above it we can by pass for partiular users on this basis we understand the usage.
         throw errors.invalidInput('general', 'You have reached the maximum number of funds. Please upgrade your account to add more funds.')
       }
 
