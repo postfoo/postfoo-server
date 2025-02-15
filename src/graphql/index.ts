@@ -72,7 +72,7 @@ async function setup(app: FastifyInstance) {
         }
       })
       return mercurius.defaultErrorFormatter(execution, ...args)
-    }
+    },
   })
 
   await app.ready()

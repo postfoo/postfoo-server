@@ -35,7 +35,7 @@ export async function loadSchema() {
   const actualResolvers = await getBareResolvers()
   const [typeDefs, resolvers] = await Promise.all([
     getTypes(),
-    composeResolvers(actualResolvers, await resolversComposition())
+    composeResolvers(actualResolvers, await resolversComposition()),
   ])
   return makeExecutableSchema({ typeDefs, resolvers })
 }

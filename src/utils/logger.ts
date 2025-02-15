@@ -24,7 +24,7 @@ const logger = {
       extra: { message },
     })
     err.message = message
-  }
+  },
 }
 
 export default logger

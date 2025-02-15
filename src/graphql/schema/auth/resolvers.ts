@@ -225,7 +225,7 @@ const resolvers: Resolvers = {
       }
       return { }
     },
-  }
+  },
 }
 
 export default resolvers
