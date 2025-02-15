@@ -4,7 +4,7 @@
   "description": "PostFoo is project for tracking personal finance",
   "main": "dist/index.js",
   "scripts": {
-    "build:gql": "copyfiles src/**/*.{graphql} dist -u 1",
+    "build:gql": "copyfiles src/**/*.graphql dist -u 1",
     "prebuild": "npm run build:gql",
     "build": "tsc",
     "build:incr": "tsc -p tsconfig.json --incremental --tsBuildInfoFile dist/tsbuildinfo",
