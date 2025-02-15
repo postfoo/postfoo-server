@@ -22,8 +22,9 @@ export type Scalars = {
   DateTime: { input: string; output: string; }
   EmailAddress: { input: string; output: string; }
   JWT: { input: string; output: string; }
+  /**  Can take valid scalar values also  */
   Json: { input: any; output: any; }
-  /**  Same as Json but validates it's a plain object  */
+  /**  Same as Json but validates it's a object  */
   JsonObject: { input: any; output: any; }
   NonEmptyString: { input: string; output: string; }
   /**  E.164 specification  */
@@ -192,7 +193,6 @@ export enum FundCategory {
   DEBT_OVERNIGHT = 'DEBT_OVERNIGHT',
   DEBT_SHORT_DURATION = 'DEBT_SHORT_DURATION',
   DEBT_ULTRA_SHORT_DURATION = 'DEBT_ULTRA_SHORT_DURATION',
-  EQUITY_BANKING_AND_FINANCIAL_SERVICES = 'EQUITY_BANKING_AND_FINANCIAL_SERVICES',
   EQUITY_DIVIDEND_YIELD = 'EQUITY_DIVIDEND_YIELD',
   EQUITY_ELSS = 'EQUITY_ELSS',
   EQUITY_FLEXI_CAP = 'EQUITY_FLEXI_CAP',
@@ -201,6 +201,7 @@ export enum FundCategory {
   EQUITY_LARGE_CAP = 'EQUITY_LARGE_CAP',
   EQUITY_MID_CAP = 'EQUITY_MID_CAP',
   EQUITY_MULTI_CAP = 'EQUITY_MULTI_CAP',
+  EQUITY_SECTORAL_BANKING_AND_FINANCIAL_SERVICES = 'EQUITY_SECTORAL_BANKING_AND_FINANCIAL_SERVICES',
   EQUITY_SECTORAL_INFRASTRUCTURE = 'EQUITY_SECTORAL_INFRASTRUCTURE',
   EQUITY_SECTORAL_PHARMA_AND_HEALTHCARE = 'EQUITY_SECTORAL_PHARMA_AND_HEALTHCARE',
   EQUITY_SECTORAL_TECHNOLOGY = 'EQUITY_SECTORAL_TECHNOLOGY',
