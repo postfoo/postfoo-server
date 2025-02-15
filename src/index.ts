@@ -1,8 +1,9 @@
 import 'module-alias/register'
-import Sentry from 'src/utils/sentry'
+import 'src/instrumentation'
 
 import cors from '@fastify/cors'
 import rateLimit from '@fastify/rate-limit'
+import Sentry from '@sentry/node'
 import fastify, { FastifyRequest } from 'fastify'
 import db from 'src/db'
 import graphql from 'src/graphql'

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
+import Sentry from '@sentry/node'
 import chalk from 'chalk'
-import sentry from 'src/utils/sentry'
 
 const log = (...args: any[]) => {
   console.log(args.join(' '))
@@ -20,7 +20,7 @@ const logger = {
     log('[ERROR]', chalk.red(message))
 
     const err = new Error(message)
-    sentry.captureException(err, {
+    Sentry.captureException(err, {
       extra: { message },
     })
     err.message = message

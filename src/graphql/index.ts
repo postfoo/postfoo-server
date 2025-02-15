@@ -1,4 +1,4 @@
-import { User as SentryUser } from '@sentry/node'
+import Sentry, { User as SentryUser } from '@sentry/node'
 import { FastifyInstance, FastifyRequest } from 'fastify'
 import mercurius from 'mercurius'
 import { loadSchema } from 'src/graphql/schema'
@@ -6,40 +6,35 @@ import * as model from 'src/models'
 import { User } from 'src/types'
 import * as jwt from 'src/utils/jwt'
 import logger from 'src/utils/logger'
-import sentry from 'src/utils/sentry'
 
 const getContext = async (req: FastifyRequest) => {
   const token = req.headers.authorization?.replace('Bearer ', '')
-  let jwtVal: jwt.Jwt | undefined
+  let jwtValue: jwt.Jwt | undefined
   let user: User | undefined
-  if (token) {
-    try {
-      jwtVal = await jwt.verify(token)
-      user = await model.user.get(jwtVal.sub)
-    } catch (err) {
-      logger.error(err)
-      user = undefined
-      jwtVal = undefined
+  try {
+    if (token) {
+      jwtValue = await jwt.verify(token)
+      user = await model.user.get(jwtValue.sub)
     }
+  } catch (err) {
+    logger.error(err)
+    user = undefined
+    jwtValue = undefined
   }
-  return {
-    token,
-    jwt: jwtVal,
-    user,
-  }
+  return { token, jwt: jwtValue, user }
 }
 
 async function setup(app: FastifyInstance) {
   const schema = await loadSchema()
 
-  app.register(mercurius, {
+  await app.register(mercurius, {
     schema,
     graphiql: process.env.MODE !== 'prod' ? true : false,
     path: '/api',
     context: getContext,
-    errorFormatter: (execution, ...args) => {
-      sentry.withScope(async (scope) => {
-        const req = args[0].reply.request
+    errorFormatter: (execution, context) => {
+      Sentry.withScope(async (scope) => {
+        const req = context.reply.request
         const { user } = await getContext(req)
         const gqlParams = req.body as { operationName?: string, variables?: Record<string, any>, query?: string }
 
@@ -67,11 +62,11 @@ async function setup(app: FastifyInstance) {
             }
             // scope.setTag('error.code', err.extensions?.code || err.name)
             scope.setExtra('error.message', err.message)
-            sentry.captureException(err, scope)
+            Sentry.captureException(err, scope)
           }
         }
       })
-      return mercurius.defaultErrorFormatter(execution, ...args)
+      return mercurius.defaultErrorFormatter(execution, context)
     },
   })
 
