@@ -2,7 +2,7 @@
 
 PostFoo helps you keep track of your finances and information for you and your family
 
-This is deployed @ [gql.postfoo.com](https://gql.postfoo.com) and [client](https://github.com/umakantp/postfoo-client) at [postfoo.com](https://postfoo.com)
+This is deployed @ [gql.postfoo.com](https://gql.postfoo.com) and [client](https://github.com/postfoo/postfoo-client) at [postfoo.com](https://postfoo.com)
 
 ### Setup
 
@@ -44,7 +44,7 @@ Note: Generally for local development, you not need to change anything in the `.
 
 ### Deployments
 
-Deployments are done manually by triggering the [Deploy script](https://github.com/umakantp/postfoo-client/actions/workflows/merge-dev-to-main.yml).
+Deployments are done manually by triggering the [Deploy script](https://github.com/postfoo/postfoo-client/actions/workflows/merge-dev-to-main.yml).
 
 
 ### Coding guidelines
